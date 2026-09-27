@@ -1,0 +1,216 @@
+<svg id="campus-map" viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .wall { fill: #000000; }
+        .corridor { fill: #ffffff; }
+        .text-main { font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; fill: #000033; text-anchor: middle; alignment-baseline: middle; }
+        .text-sm { font-family: Arial, sans-serif; font-size: 13px; font-weight: bold; fill: #000033; text-anchor: middle; alignment-baseline: middle; }
+        .text-xs { font-family: Arial, sans-serif; font-size: 11px; font-weight: bold; fill: #000033; text-anchor: middle; alignment-baseline: middle; }
+        .direction-box { fill: #ffffff; stroke: #000000; stroke-width: 2; rx: 8; }
+        .direction-text { font-family: Arial, sans-serif; font-size: 22px; font-weight: bold; fill: #000000; text-anchor: middle; alignment-baseline: middle; }
+        .path-line { fill: none; stroke: #0066ff; stroke-width: 3; stroke-dasharray: 8, 5; }
+        .path-node { fill: #ffffff; stroke: #ff0000; stroke-width: 3; r: 6; }
+    </style>
+
+    <g id="map-content">
+        <!-- Structural Corridors & Walls -->
+        <rect id="wall-outer" class="wall" x="80" y="80" width="1040" height="740" />
+        <rect id="corridor-outer" class="corridor" x="100" y="100" width="1000" height="700" />
+        <rect id="wall-center" class="wall" x="490" y="340" width="220" height="280" />
+        <rect id="corridor-center" class="corridor" x="500" y="350" width="200" height="260" />
+
+        <!-- Courtyard Circles -->
+        <circle cx="600" cy="480" r="30" fill="#f0f0f0" stroke="#000000" stroke-width="2"/>
+        <circle cx="600" cy="480" r="20" fill="#a0c4ff" stroke="#000000" stroke-width="2"/>
+        <circle cx="600" cy="480" r="10" fill="#f4e04d" stroke="#000000" stroke-width="1"/>
+
+        <!-- Grass Lawns -->
+        <rect id="grass-east-border" x="740" y="340" width="200" height="300" fill="#000000" />
+        <rect id="grass-east" x="750" y="350" width="180" height="280" fill="#73d936" stroke="#000000" stroke-width="2"/>
+        <rect id="grass-west-border" x="360" y="350" width="90" height="150" fill="#000000" />
+        <rect id="grass-west" x="370" y="360" width="70" height="130" fill="#73d936" stroke="#000000" stroke-width="2"/>
+
+        <!-- Trees -->
+        <circle cx="830" cy="400" r="20" fill="#2d6a4f" stroke="#000000" stroke-width="2"/>
+        <circle cx="860" cy="420" r="15" fill="#1b4332" stroke="#000000" stroke-width="2"/>
+        <circle cx="780" cy="580" r="20" fill="#2d6a4f" stroke="#000000" stroke-width="2"/>
+        <circle cx="810" cy="600" r="18" fill="#1b4332" stroke="#000000" stroke-width="2"/>
+
+        <!-- Obstacles -->
+        <rect id="obstacle-top-left" x="260" y="165" width="65" height="70" fill="#e0e0e0" stroke="#000000" stroke-width="3"/>
+        <rect id="obstacle-green" x="230" y="275" width="50" height="45" fill="#73d936" stroke="#000000" stroke-width="3"/>
+        <circle cx="245" cy="290" r="5" fill="#ff0000"/>
+        <circle cx="265" cy="305" r="5" fill="#ff0000"/>
+        <rect id="obstacle-mid-right" x="895" y="200" width="55" height="70" fill="#e0e0e0" stroke="#000000" stroke-width="3"/>
+
+        <!-- Rooms: Top Wing -->
+        <g id="rooms-top-wing" stroke="#000000" stroke-width="3">
+            <rect id="ElectricalCabin" x="170" y="95" width="80" height="60" fill="#f9e770" />
+            <rect id="AILab" x="260" y="95" width="190" height="60" fill="#9bc6ff" />
+            <rect id="DSLab" x="460" y="95" width="255" height="60" fill="#9bc6ff" />
+            <rect id="CoreSpace" x="725" y="95" width="295" height="60" fill="#d9bbf9" />
+            <rect id="YuvarajSir" x="1030" y="95" width="60" height="60" fill="#fbd394" />
+        </g>
+
+        <!-- Rooms: Left Wing -->
+        <g id="rooms-left-wing" stroke="#000000" stroke-width="3">
+            <rect id="CDCHall" x="95" y="165" width="150" height="70" fill="#ffb3cc" />
+            <rect id="StudentRestEast" x="95" y="245" width="90" height="60" fill="#9bc6ff" />
+            <rect id="AIDS_B" x="95" y="315" width="90" height="65" fill="#f9e770" />
+            <rect id="AIDS_A" x="95" y="390" width="90" height="65" fill="#f9e770" />
+            <rect id="CSEC" x="95" y="465" width="90" height="65" fill="#f9e770" />
+            <rect id="LiftEast" x="95" y="540" width="70" height="50" fill="#c6a1f9" />
+            <rect id="StaircaseEast" x="95" y="600" width="80" height="55" fill="#e0e0e0" />
+            <rect id="NewBuilding" x="95" y="665" width="90" height="80" fill="#ffb3cc" />
+        </g>
+
+        <!-- Rooms: Right Wing -->
+        <g id="rooms-right-wing" stroke="#000000" stroke-width="3">
+            <polygon id="SDCHall" points="1060,165 1105,165 1105,285 1025,285 1025,200" fill="#a0f4a0" />
+            <rect id="LiftWest" x="1035" y="295" width="70" height="50" fill="#c6a1f9" />
+            <rect id="StudentRestWest" x="1025" y="355" width="80" height="65" fill="#9bc6ff" />
+            <rect id="SecondEntrance" x="1035" y="430" width="70" height="55" fill="#fbd394" />
+            <rect id="StaircaseWest" x="1035" y="495" width="70" height="50" fill="#e0e0e0" />
+            <rect id="PrincipalRoom" x="1025" y="555" width="80" height="80" fill="#d9bbf9" />
+            <rect id="StaffRestRoom" x="1035" y="645" width="70" height="100" fill="#9bc6ff" />
+        </g>
+
+        <!-- Rooms: Bottom Wing -->
+        <g id="rooms-bottom-wing" stroke="#000000" stroke-width="3">
+            <rect id="KnowledgeHub" x="195" y="685" width="115" height="60" fill="#d9bbf9" />
+            <rect id="MathLab" x="320" y="685" width="80" height="60" fill="#9bc6ff" />
+            <rect id="Library" x="410" y="685" width="105" height="60" fill="#a0f4a0" />
+            <rect id="Reception" x="540" y="610" width="120" height="65" fill="#ffb3cc" />
+            <rect id="MainEntrance" x="540" y="685" width="120" height="80" fill="#ffffff" />
+            <line x1="520" y1="775" x2="680" y2="775" stroke="#000000" stroke-width="2"/>
+            <line x1="520" y1="790" x2="680" y2="790" stroke="#000000" stroke-width="2"/>
+            <rect id="entrance-frame" x="500" y="765" width="200" height="40" fill="none" />
+            <rect id="CashCounter" x="700" y="685" width="95" height="60" fill="#9bc6ff" />
+            <rect id="AdmissionCentre" x="805" y="685" width="100" height="60" fill="#a0f4a0" />
+            <rect id="ScholarshipCounter" x="915" y="685" width="100" height="60" fill="#fbd394" />
+        </g>
+
+        <!-- Center Blocks -->
+        <g id="rooms-center-blocks" stroke="#000000" stroke-width="3">
+            <rect id="AmphiTheatre" x="375" y="175" width="325" height="135" fill="#fde4a7" />
+            <rect id="ViscomHall" x="715" y="175" width="165" height="135" fill="#ffb3cc" />
+            <rect id="Stage" x="230" y="350" width="120" height="110" fill="#ffb3cc" />
+            <rect id="BoardRoom" x="220" y="520" width="155" height="145" fill="#a0f4a0" />
+            <rect id="IdeaHub" x="385" y="530" width="70" height="90" fill="#9bc6ff" />
+        </g>
+
+        <!-- Room Text Labels -->
+        <text x="210" y="115" class="text-xs">Electrical</text><text x="210" y="135" class="text-xs">Cabin</text>
+        <text x="355" y="130" class="text-sm">AI Laboratory</text>
+        <text x="585" y="130" class="text-sm">DS Laboratory</text>
+        <text x="870" y="130" class="text-sm">Core Space</text>
+        <text x="1060" y="115" class="text-xs">Yuvaraj</text><text x="1060" y="135" class="text-xs">Sir Cabin</text>
+        <text x="170" y="205" class="text-sm">CDC Hall</text>
+        <text x="140" y="270" class="text-xs">Student</text><text x="140" y="285" class="text-xs">Rest Room</text>
+        <text x="140" y="340" class="text-xs">2nd Year</text><text x="140" y="355" class="text-xs">AI-DS B</text>
+        <text x="140" y="415" class="text-xs">2nd Year</text><text x="140" y="430" class="text-xs">AI-DS A</text>
+        <text x="140" y="490" class="text-xs">2nd Year</text><text x="140" y="505" class="text-xs">CSE-C</text>
+        <text x="130" y="570" class="text-sm">Lift</text>
+        <text x="135" y="632" class="text-xs">Staircase</text>
+        <text x="140" y="695" class="text-xs">New</text><text x="140" y="710" class="text-xs">Building</text>
+        <text x="1065" y="235" class="text-sm">SDC</text><text x="1065" y="255" class="text-sm">Hall</text>
+        <text x="1070" y="325" class="text-sm">Lift</text>
+        <text x="1065" y="380" class="text-xs">Student</text><text x="1065" y="395" class="text-xs">Rest Room</text>
+        <text x="1070" y="450" class="text-xs">Second</text><text x="1070" y="465" class="text-xs">Entrance</text>
+        <text x="1070" y="525" class="text-xs">Staircase</text>
+        <text x="1065" y="585" class="text-xs">Principal</text><text x="1065" y="600" class="text-xs">Room</text>
+        <text x="1070" y="685" class="text-xs">Staff</text><text x="1070" y="700" class="text-xs">Rest Room</text>
+        <text x="252" y="720" class="text-xs">Knowledge Hub</text>
+        <text x="360" y="720" class="text-xs">Math Lab</text>
+        <text x="462" y="720" class="text-xs">Library</text>
+        <text x="600" y="640" class="text-xs">Reception</text>
+        <text x="600" y="730" class="text-sm">Main Entrance</text>
+        <text x="747" y="720" class="text-xs">Cash Counter</text>
+        <text x="855" y="710" class="text-xs">Admission</text><text x="855" y="725" class="text-xs">Centre</text>
+        <text x="965" y="710" class="text-xs">Scholarship</text><text x="965" y="725" class="text-xs">Counter</text>
+        <text x="535" y="245" class="text-main">Amphi Theatre</text>
+        <text x="795" y="235" class="text-main" fill="#3a0ca3">Viscom</text><text x="795" y="260" class="text-main" fill="#3a0ca3">Hall</text>
+        <text x="290" y="415" class="text-main" fill="#3a0ca3">Stage</text>
+        <text x="295" y="600" class="text-main">Board Room</text>
+        <text x="420" y="580" class="text-xs">Idea Hub</text>
+
+        <!-- Direction Indicators -->
+        <rect class="direction-box" x="540" y="30" width="120" height="40" />
+        <text x="600" y="57" class="direction-text">South</text>
+        <rect class="direction-box" x="540" y="830" width="120" height="40" />
+        <text x="600" y="857" class="direction-text">North</text>
+        <rect class="direction-box" x="30" y="410" width="40" height="100" />
+        <text x="57" y="460" class="direction-text" transform="rotate(-90 57 460)">East</text>
+        <rect class="direction-box" x="1130" y="410" width="40" height="100" />
+        <text x="1157" y="460" class="direction-text" transform="rotate(90 1157 460)">West</text>
+
+        <!-- Walkway Path Network Lines (Edges) -->
+        <g id="edges-group">
+            <line x1="600" y1="660" x2="600" y2="680" class="path-line" />
+            <line x1="600" y1="680" x2="470" y2="680" class="path-line" />
+            <line x1="470" y1="680" x2="365" y2="680" class="path-line" />
+            <line x1="365" y1="680" x2="280" y2="680" class="path-line" />
+            <line x1="280" y1="680" x2="200" y2="680" class="path-line" />
+            <line x1="200" y1="680" x2="200" y2="550" class="path-line" />
+            <line x1="200" y1="550" x2="200" y2="450" class="path-line" />
+            <line x1="200" y1="450" x2="200" y2="350" class="path-line" />
+            <line x1="200" y1="350" x2="200" y2="275" class="path-line" />
+            <line x1="200" y1="275" x2="200" y2="240" class="path-line" />
+            <line x1="200" y1="240" x2="215" y2="240" class="path-line" />
+            <line x1="215" y1="240" x2="215" y2="260" class="path-line" />
+            <line x1="215" y1="260" x2="295" y2="260" class="path-line" />
+            <line x1="295" y1="260" x2="295" y2="235" class="path-line" />
+            <line x1="295" y1="235" x2="340" y2="235" class="path-line" />
+            <line x1="340" y1="235" x2="340" y2="165" class="path-line" />
+            <line x1="340" y1="165" x2="470" y2="165" class="path-line" />
+            <line x1="470" y1="165" x2="600" y2="165" class="path-line" />
+            <line x1="600" y1="165" x2="735" y2="165" class="path-line" />
+            <line x1="735" y1="165" x2="875" y2="165" class="path-line" />
+            <line x1="875" y1="165" x2="1000" y2="165" class="path-line" />
+            <line x1="1000" y1="165" x2="1000" y2="225" class="path-line" />
+            <line x1="1000" y1="225" x2="1000" y2="315" class="path-line" />
+            <line x1="1000" y1="315" x2="1000" y2="390" class="path-line" />
+            <line x1="1000" y1="390" x2="1000" y2="460" class="path-line" />
+            <line x1="1000" y1="460" x2="1000" y2="540" class="path-line" />
+            <line x1="1000" y1="540" x2="1000" y2="610" class="path-line" />
+            <line x1="1000" y1="610" x2="1000" y2="680" class="path-line" />
+            <line x1="1000" y1="680" x2="870" y2="680" class="path-line" />
+            <line x1="870" y1="680" x2="735" y2="680" class="path-line" />
+            <line x1="735" y1="680" x2="600" y2="680" class="path-line" />
+        </g>
+
+        <!-- Waypoint Nodes (Circles) -->
+        <g id="nodes-group">
+            <circle id="N_Recpt_Door" cx="600" cy="660" class="path-node"><title>N_Recpt_Door</title></circle>
+            <circle id="N_Recpt_Hall" cx="600" cy="680" class="path-node"><title>N_Recpt_Hall</title></circle>
+            <circle id="N_Bot_Lib" cx="470" cy="680" class="path-node"><title>N_Bot_Lib</title></circle>
+            <circle id="N_Bot_Math" cx="365" cy="680" class="path-node"><title>N_Bot_Math</title></circle>
+            <circle id="N_Bot_Know" cx="280" cy="680" class="path-node"><title>N_Bot_Know</title></circle>
+            <circle id="BL_Corner" cx="200" cy="680" class="path-node"><title>BL_Corner</title></circle>
+            <circle id="N_Left_Board" cx="200" cy="550" class="path-node"><title>N_Left_Board</title></circle>
+            <circle id="N_Left_Stage" cx="200" cy="450" class="path-node"><title>N_Left_Stage</title></circle>
+            <circle id="N_Left_AIDS" cx="200" cy="350" class="path-node"><title>N_Left_AIDS</title></circle>
+            <circle id="N_Left_CDC" cx="200" cy="275" class="path-node"><title>N_Left_CDC</title></circle>
+            <circle id="W1" cx="200" cy="240" class="path-node"><title>W1</title></circle>
+            <circle id="W2" cx="215" cy="240" class="path-node"><title>W2</title></circle>
+            <circle id="W3" cx="215" cy="260" class="path-node"><title>W3</title></circle>
+            <circle id="W4" cx="295" cy="260" class="path-node"><title>W4</title></circle>
+            <circle id="W5" cx="295" cy="235" class="path-node"><title>W5</title></circle>
+            <circle id="W6" cx="340" cy="235" class="path-node"><title>W6</title></circle>
+            <circle id="TL_Corner" cx="340" cy="165" class="path-node"><title>TL_Corner</title></circle>
+            <circle id="N_Top_DS" cx="470" cy="165" class="path-node"><title>N_Top_DS</title></circle>
+            <circle id="N_Top_Mid" cx="600" cy="165" class="path-node"><title>N_Top_Mid</title></circle>
+            <circle id="N_Top_Core" cx="735" cy="165" class="path-node"><title>N_Top_Core</title></circle>
+            <circle id="N_Top_Yuv" cx="875" cy="165" class="path-node"><title>N_Top_Yuv</title></circle>
+            <circle id="TR_Corner" cx="1000" cy="165" class="path-node"><title>TR_Corner</title></circle>
+            <circle id="N_Right_SDC" cx="1000" cy="225" class="path-node"><title>N_Right_SDC</title></circle>
+            <circle id="N_Right_Lift" cx="1000" cy="315" class="path-node"><title>N_Right_Lift</title></circle>
+            <circle id="N_Right_Rest" cx="1000" cy="390" class="path-node"><title>N_Right_Rest</title></circle>
+            <circle id="N_Right_Sec" cx="1000" cy="460" class="path-node"><title>N_Right_Sec</title></circle>
+            <circle id="N_Right_Stair" cx="1000" cy="540" class="path-node"><title>N_Right_Stair</title></circle>
+            <circle id="N_Right_Princ" cx="1000" cy="610" class="path-node"><title>N_Right_Princ</title></circle>
+            <circle id="BR_Corner" cx="1000" cy="680" class="path-node"><title>BR_Corner</title></circle>
+            <circle id="N_Bot_Admin" cx="870" cy="680" class="path-node"><title>N_Bot_Admin</title></circle>
+            <circle id="N_Bot_Cash" cx="735" cy="680" class="path-node"><title>N_Bot_Cash</title></circle>
+        </g>
+    </g>
+</svg>

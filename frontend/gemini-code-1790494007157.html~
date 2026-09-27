@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCET Exact Blueprint Navigation - Zoomable All Rooms</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- SVG Pan Zoom Library -->
+    <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+</head>
+<body>
+
+    <div id="ui-panel">
+        <div class="form-group">
+            <label for="source">Source:</label>
+            <select id="source">
+                <option value="MainEntrance">Main Entrance</option>
+                <option value="Reception">Reception</option>
+                <option value="SecondEntrance">Second Entrance</option>
+                <option value="ElectricalCabin">Electrical Cabin</option>
+                <option value="AILab">AI Laboratory</option>
+                <option value="DSLab">DS Laboratory</option>
+                <option value="CoreSpace">Core Space</option>
+                <option value="YuvarajSir">Yuvaraj Sir Cabin</option>
+                <option value="CDCHall">CDC Hall</option>
+                <option value="StudentRestEast">Student Rest Room (East)</option>
+                <option value="AIDS_B">2nd Year AI-DS B</option>
+                <option value="AIDS_A">2nd Year AI-DS A</option>
+                <option value="CSEC">2nd Year CSE-C</option>
+                <option value="LiftEast">Lift (East)</option>
+                <option value="StaircaseEast">Staircase (East)</option>
+                <option value="NewBuilding">New Building</option>
+                <option value="SDCHall">SDC Hall</option>
+                <option value="LiftWest">Lift (West)</option>
+                <option value="StudentRestWest">Student Rest Room (West)</option>
+                <option value="StaircaseWest">Staircase (West)</option>
+                <option value="PrincipalRoom">Principal Room</option>
+                <option value="StaffRestRoom">Staff Rest Room</option>
+                <option value="KnowledgeHub">Knowledge Hub</option>
+                <option value="MathLab">Math Lab</option>
+                <option value="Library">Library</option>
+                <option value="CashCounter">Cash Counter</option>
+                <option value="AdmissionCentre">Admission Centre</option>
+                <option value="ScholarshipCounter">Scholarship Counter</option>
+                <option value="AmphiTheatre">Amphi Theatre</option>
+                <option value="ViscomHall">Viscom Hall</option>
+                <option value="Stage">Stage</option>
+                <option value="BoardRoom">Board Room</option>
+                <option value="IdeaHub">Idea Hub</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="destination">Destination:</label>
+            <select id="destination">
+                 <option value="MainEntrance">Main Entrance</option>
+                 <option value="Reception">Reception</option>
+                 <option value="SecondEntrance">Second Entrance</option>
+                 <option value="ElectricalCabin">Electrical Cabin</option>
+                 <option value="AILab">AI Laboratory</option>
+                 <option value="DSLab">DS Laboratory</option>
+                 <option value="CoreSpace">Core Space</option>
+                 <option value="YuvarajSir">Yuvaraj Sir Cabin</option>
+                 <option value="CDCHall">CDC Hall</option>
+                 <option value="StudentRestEast">Student Rest Room (East)</option>
+                 <option value="AIDS_B">2nd Year AI-DS B</option>
+                 <option value="AIDS_A">2nd Year AI-DS A</option>
+                 <option value="CSEC">2nd Year CSE-C</option>
+                 <option value="LiftEast">Lift (East)</option>
+                 <option value="StaircaseEast">Staircase (East)</option>
+                 <option value="NewBuilding">New Building</option>
+                 <option value="SDCHall">SDC Hall</option>
+                 <option value="LiftWest">Lift (West)</option>
+                 <option value="StudentRestWest">Student Rest Room (West)</option>
+                 <option value="StaircaseWest">Staircase (West)</option>
+                 <option value="PrincipalRoom">Principal Room</option>
+                 <option value="StaffRestRoom">Staff Rest Room</option>
+                 <option value="KnowledgeHub">Knowledge Hub</option>
+                 <option value="MathLab">Math Lab</option>
+                 <option value="Library">Library</option>
+                 <option value="CashCounter">Cash Counter</option>
+                 <option value="AdmissionCentre">Admission Centre</option>
+                 <option value="ScholarshipCounter">Scholarship Counter</option>
+                 <option value="AmphiTheatre">Amphi Theatre</option>
+                 <option value="ViscomHall">Viscom Hall</option>
+                 <option value="Stage">Stage</option>
+                 <option value="BoardRoom">Board Room</option>
+                 <option value="IdeaHub" selected>Idea Hub</option>
+            </select>
+        </div>
+        <button id="navigate-btn">Navigate Route</button>
+        <div id="status">Ready.</div>
+    </div>
+
+    <div id="map-container">
+        <svg id="campus-map" viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg">
+            <g id="map-content">
+                <!-- Layer 1: Background, Corridors & Structural Elements -->
+                <g id="structures-layer"></g>
+
+                <!-- Layer 2: Rooms with Auto-Centered Labels -->
+                <g id="rooms-layer"></g>
+
+                <!-- Layer 3: Navigation Network (Edges, Nodes, Route, & Animated Dot) -->
+                <g id="network-layer">
+                    <g id="edges-group"></g>
+                    <g id="nodes-group"></g>
+                    <path id="active-route" d="" />
+                    <circle id="animated-dot" cx="600" cy="660" r="10" display="none" />
+                </g>
+            </g>
+        </svg>
+    </div>
+
+    <!-- Map Configuration (Edit Room Rectangles, Nodes, and Edges here) -->
+    <script src="mapData.js"></script>
+    <!-- Application Logic & Pathfinding -->
+    <script src="script.js"></script>
+</body>
+</html>

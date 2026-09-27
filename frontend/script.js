@@ -1,0 +1,373 @@
+/**
+ * VCET VAZHI KAATI - MAP ENGINE & NAVIGATION
+ * =============================================================================
+ * Renders SVG rooms, structural elements, corridors, nodes, and edges dynamically
+ * from `mapConfig.js`. Handles Dijkstra's algorithm and animated path routing.
+ * =============================================================================
+ */
+
+const svgNS = "http://www.w3.org/2000/svg";
+let currentAnimation = null;
+
+// Initialize SVG Pan and Zoom
+window.addEventListener('load', () => {
+    if (window.svgPanZoom) {
+        window.panZoom = svgPanZoom('#campus-map', {
+            zoomEnabled: true,
+            controlIconsEnabled: true,
+            fit: true,
+            center: true,
+            minZoom: 0.5,
+            maxZoom: 10
+        });
+    }
+});
+
+/**
+ * Dynamically render the entire SVG map from the configurations in mapConfig.js
+ */
+function renderMap() {
+    const structuresLayer = document.getElementById('structures-layer');
+    const roomsLayer = document.getElementById('rooms-layer');
+    const edgesGroup = document.getElementById('edges-group');
+    const nodesGroup = document.getElementById('nodes-group');
+
+    // 1. Render Structural Rectangles
+    if (structuresLayer && typeof STRUCTURAL_RECTS !== 'undefined') {
+        structuresLayer.innerHTML = '';
+
+        STRUCTURAL_RECTS.forEach(rect => {
+            const el = document.createElementNS(svgNS, 'rect');
+            el.setAttribute('id', rect.id);
+            el.setAttribute('x', rect.x);
+            el.setAttribute('y', rect.y);
+            el.setAttribute('width', rect.width);
+            el.setAttribute('height', rect.height);
+            if (rect.class) el.setAttribute('class', rect.class);
+            if (rect.fill) el.setAttribute('fill', rect.fill);
+            if (rect.stroke) el.setAttribute('stroke', rect.stroke);
+            if (rect.strokeWidth) el.setAttribute('stroke-width', rect.strokeWidth);
+            structuresLayer.appendChild(el);
+        });
+
+        // Render Decorative Circles (Gardens, courtyard, dots)
+        if (typeof DECORATIVE_CIRCLES !== 'undefined') {
+            DECORATIVE_CIRCLES.forEach(c => {
+                const el = document.createElementNS(svgNS, 'circle');
+                el.setAttribute('cx', c.cx);
+                el.setAttribute('cy', c.cy);
+                el.setAttribute('r', c.r);
+                if (c.fill) el.setAttribute('fill', c.fill);
+                if (c.stroke) el.setAttribute('stroke', c.stroke);
+                if (c.strokeWidth) el.setAttribute('stroke-width', c.strokeWidth);
+                structuresLayer.appendChild(el);
+            });
+        }
+
+        // Render Decorative Lines (Entrance gates/steps)
+        if (typeof DECORATIVE_LINES !== 'undefined') {
+            DECORATIVE_LINES.forEach(l => {
+                const el = document.createElementNS(svgNS, 'line');
+                el.setAttribute('x1', l.x1);
+                el.setAttribute('y1', l.y1);
+                el.setAttribute('x2', l.x2);
+                el.setAttribute('y2', l.y2);
+                el.setAttribute('stroke', l.stroke || '#000');
+                el.setAttribute('stroke-width', l.strokeWidth || 2);
+                structuresLayer.appendChild(el);
+            });
+        }
+
+        // Render Direction Compass Markers (South, North, East, West)
+        if (typeof DIRECTION_MARKERS !== 'undefined') {
+            DIRECTION_MARKERS.forEach(d => {
+                const rect = document.createElementNS(svgNS, 'rect');
+                rect.setAttribute('class', 'direction-box');
+                rect.setAttribute('x', d.x);
+                rect.setAttribute('y', d.y);
+                rect.setAttribute('width', d.width);
+                rect.setAttribute('height', d.height);
+                structuresLayer.appendChild(rect);
+
+                const txt = document.createElementNS(svgNS, 'text');
+                txt.setAttribute('x', d.textX);
+                txt.setAttribute('y', d.textY);
+                txt.setAttribute('class', 'direction-text');
+                if (d.rotate !== null && d.rotate !== undefined) {
+                    txt.setAttribute('transform', `rotate(${d.rotate} ${d.textX} ${d.textY})`);
+                }
+                txt.textContent = d.label;
+                structuresLayer.appendChild(txt);
+            });
+        }
+    }
+
+    // 2. Render Rooms and Auto-Centered Labels
+    if (roomsLayer && typeof MAP_ROOMS !== 'undefined') {
+        roomsLayer.innerHTML = '';
+
+        MAP_ROOMS.forEach(room => {
+            const group = document.createElementNS(svgNS, 'g');
+            group.setAttribute('class', 'room-item');
+            group.setAttribute('data-id', room.id);
+
+            // Shape (Polygon or Rectangle)
+            if (room.isPolygon) {
+                const poly = document.createElementNS(svgNS, 'polygon');
+                poly.setAttribute('points', room.points);
+                poly.setAttribute('fill', room.fill || '#e0e0e0');
+                poly.setAttribute('stroke', '#000000');
+                poly.setAttribute('stroke-width', '3');
+                group.appendChild(poly);
+            } else {
+                const rect = document.createElementNS(svgNS, 'rect');
+                rect.setAttribute('x', room.x);
+                rect.setAttribute('y', room.y);
+                rect.setAttribute('width', room.width);
+                rect.setAttribute('height', room.height);
+                rect.setAttribute('fill', room.fill || '#e0e0e0');
+                rect.setAttribute('stroke', '#000000');
+                rect.setAttribute('stroke-width', '3');
+                group.appendChild(rect);
+            }
+
+            // Calculate auto-centered position
+            const cx = room.textX !== undefined ? room.textX : (room.x + room.width / 2);
+            const cy = room.textY !== undefined ? room.textY : (room.y + room.height / 2);
+
+            const lines = room.lines || [room.name];
+            const textClass = room.textClass || 'text-sm';
+            const lineHeight = textClass === 'text-main' ? 22 : (textClass === 'text-sm' ? 16 : 14);
+            const totalHeight = (lines.length - 1) * lineHeight;
+            const startY = cy - (totalHeight / 2);
+
+            lines.forEach((lineText, idx) => {
+                const txt = document.createElementNS(svgNS, 'text');
+                txt.setAttribute('x', cx);
+                txt.setAttribute('y', startY + idx * lineHeight);
+                txt.setAttribute('class', textClass);
+                if (room.textColor) {
+                    txt.setAttribute('fill', room.textColor);
+                }
+                txt.textContent = lineText;
+                group.appendChild(txt);
+            });
+
+            // Browser tooltip on hover: Shows Room details & connected waypoint
+            const title = document.createElementNS(svgNS, 'title');
+            title.textContent = `${room.name} (x: ${room.x ?? 'poly'}, y: ${room.y ?? 'poly'}, w: ${room.width ?? 'poly'}, h: ${room.height ?? 'poly'}) -> Node: ${room.node}`;
+            group.appendChild(title);
+
+            // Optional: Click on room to quickly select destination
+            group.addEventListener('click', () => {
+                const destSelect = document.getElementById('destination');
+                if (destSelect) {
+                    destSelect.value = room.id;
+                    const status = document.getElementById('status');
+                    if (status) status.innerText = `Selected destination: ${room.name}`;
+                }
+            });
+
+            roomsLayer.appendChild(group);
+        });
+    }
+
+    // 3. Render Edges (Corridor Path Network lines)
+    if (edgesGroup && typeof MAP_EDGES !== 'undefined' && typeof MAP_NODES !== 'undefined') {
+        edgesGroup.innerHTML = '';
+
+        MAP_EDGES.forEach(([fromId, toId]) => {
+            const from = MAP_NODES[fromId];
+            const to = MAP_NODES[toId];
+            if (from && to) {
+                const line = document.createElementNS(svgNS, 'line');
+                line.setAttribute('x1', from.x);
+                line.setAttribute('y1', from.y);
+                line.setAttribute('x2', to.x);
+                line.setAttribute('y2', to.y);
+                line.setAttribute('class', 'path-line');
+                edgesGroup.appendChild(line);
+            }
+        });
+    }
+
+    // 4. Render Nodes (Waypoints)
+    if (nodesGroup && typeof MAP_NODES !== 'undefined') {
+        nodesGroup.innerHTML = '';
+
+        Object.entries(MAP_NODES).forEach(([nodeId, node]) => {
+            const circle = document.createElementNS(svgNS, 'circle');
+            circle.setAttribute('cx', node.x);
+            circle.setAttribute('cy', node.y);
+            circle.setAttribute('class', 'path-node');
+            circle.setAttribute('data-id', nodeId);
+
+            // Hover tooltip: Displays node ID and coordinates
+            const title = document.createElementNS(svgNS, 'title');
+            title.textContent = `${node.label || nodeId} (x: ${node.x}, y: ${node.y})`;
+            circle.appendChild(title);
+
+            nodesGroup.appendChild(circle);
+        });
+    }
+}
+
+/**
+ * Populate Source & Destination dropdown selects from MAP_ROOMS
+ */
+function populateDropdowns() {
+    const sourceSelect = document.getElementById('source');
+    const destSelect = document.getElementById('destination');
+    if (!sourceSelect || !destSelect || typeof MAP_ROOMS === 'undefined') return;
+
+    const prevSource = sourceSelect.value || 'MainEntrance';
+    const prevDest = destSelect.value || 'IdeaHub';
+
+    sourceSelect.innerHTML = '';
+    destSelect.innerHTML = '';
+
+    MAP_ROOMS.forEach(room => {
+        const optSource = document.createElement('option');
+        optSource.value = room.id;
+        optSource.textContent = room.name;
+        if (room.id === prevSource) optSource.selected = true;
+        sourceSelect.appendChild(optSource);
+
+        const optDest = document.createElement('option');
+        optDest.value = room.id;
+        optDest.textContent = room.name;
+        if (room.id === prevDest) optDest.selected = true;
+        destSelect.appendChild(optDest);
+    });
+}
+
+/*
+ * Build location-to-node mapping dictionary from MAP_ROOMS
+ */
+
+function getLocationMap() {
+    const map = {};
+    if (typeof MAP_ROOMS !== 'undefined') {
+        MAP_ROOMS.forEach(room => {
+            if (room.node) {
+                map[room.id] = room.node;
+            }
+        });
+    }
+    return map;
+}
+
+/*
+ * Dijkstra's shortest path algorithm
+ */
+
+function findShortestPath(startNode, endNode) {
+    if (!MAP_NODES || !MAP_EDGES || !MAP_NODES[startNode] || !MAP_NODES[endNode]) return [];
+
+    const distances = {}, prev = {}, queue = [];
+    for (let v in MAP_NODES) {
+        distances[v] = Infinity;
+        prev[v] = null;
+        queue.push(v);
+    }
+    distances[startNode] = 0;
+
+    while (queue.length > 0) {
+        queue.sort((a, b) => distances[a] - distances[b]);
+        const u = queue.shift();
+        if (u === endNode) break;
+
+        MAP_EDGES.forEach(edge => {
+            if (edge.includes(u)) {
+                const neighbor = edge[0] === u ? edge[1] : edge[0];
+                if (queue.includes(neighbor) && MAP_NODES[neighbor]) {
+                    const dist = Math.hypot(MAP_NODES[u].x - MAP_NODES[neighbor].x, MAP_NODES[u].y - MAP_NODES[neighbor].y);
+                    if (distances[u] + dist < distances[neighbor]) {
+                        distances[neighbor] = distances[u] + dist;
+                        prev[neighbor] = u;
+                    }
+                }
+            }
+        });
+    }
+
+    const path = [];
+    let u = endNode;
+    while (prev[u]) {
+        path.unshift(u);
+        u = prev[u];
+    }
+    if (path.length > 0) path.unshift(startNode);
+    return path;
+}
+
+// Set up UI Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Render all SVG layers and dropdowns
+    renderMap();
+    populateDropdowns();
+
+    const navigateBtn = document.getElementById('navigate-btn');
+    if (!navigateBtn) return;
+
+    navigateBtn.addEventListener('click', () => {
+        const src = document.getElementById('source').value;
+        const dest = document.getElementById('destination').value;
+        const status = document.getElementById('status');
+        const activeRoute = document.getElementById('active-route');
+        const locationMap = getLocationMap();
+
+        if (src === dest) {
+            status.innerText = "Already at destination.";
+            if (activeRoute) activeRoute.setAttribute('d', '');
+            return;
+        }
+
+        const startWaypoint = locationMap[src];
+        const endWaypoint = locationMap[dest];
+
+        if (!startWaypoint || !endWaypoint) {
+            status.innerText = "Error: Waypoint node not found for selected location.";
+            return;
+        }
+
+        const pathNodes = findShortestPath(startWaypoint, endWaypoint);
+
+        if (pathNodes.length > 0) {
+            const dot = document.getElementById('animated-dot');
+            dot.style.display = 'block';
+            status.innerText = `Routing: ${pathNodes.length - 1} steps...`;
+
+            // Draw active green highlighted route line
+            if (activeRoute) {
+                let d = '';
+                pathNodes.forEach((nodeId, idx) => {
+                    const n = MAP_NODES[nodeId];
+                    if (n) {
+                        d += (idx === 0 ? `M ${n.x} ${n.y}` : ` L ${n.x} ${n.y}`);
+                    }
+                });
+                activeRoute.setAttribute('d', d);
+            }
+
+            if (currentAnimation) clearInterval(currentAnimation);
+
+            let i = 0;
+            dot.setAttribute('cx', MAP_NODES[pathNodes[0]].x);
+            dot.setAttribute('cy', MAP_NODES[pathNodes[0]].y);
+
+            currentAnimation = setInterval(() => {
+                i++;
+                if (i >= pathNodes.length) {
+                    clearInterval(currentAnimation);
+                    status.innerText = "Arrived!";
+                    return;
+                }
+                dot.setAttribute('cx', MAP_NODES[pathNodes[i]].x);
+                dot.setAttribute('cy', MAP_NODES[pathNodes[i]].y);
+            }, 400);
+        } else {
+            status.innerText = "No path found.";
+        }
+    });
+});
