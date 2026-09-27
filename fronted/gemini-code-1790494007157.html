@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCET Exact Blueprint Navigation - Zoomable All Rooms</title>
+    <style>
+        body { margin: 0; padding: 0; background-color: #e0e0e0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        
+        #ui-panel {
+            background: #ffffff; padding: 15px 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 10;
+            display: flex; gap: 20px; align-items: center; justify-content: center; flex-wrap: wrap;
+        }
+        .form-group { display: flex; align-items: center; gap: 10px; }
+        select { padding: 8px 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 1rem; outline: none; }
+        button {
+            padding: 10px 20px; background: #0066cc; color: white; border: none; 
+            border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        button:hover { background: #0052a3; }
+        #status { font-weight: bold; color: #333; margin-left: 10px; }
+
+        #map-container {
+            flex-grow: 1; display: block; overflow: hidden; background-color: #f5f5f5; width: 100%; height: 100%;
+        }
+        svg {
+            width: 100%; height: 100%; cursor: grab;
+        }
+        svg:active {
+            cursor: grabbing;
+        }
+        
+        .wall { fill: #000000; }
+        .corridor { fill: #ffffff; }
+        .text-main { font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; fill: #000033; text-anchor: middle; alignment-baseline: middle; }
+        .text-sm { font-family: Arial, sans-serif; font-size: 13px; font-weight: bold; fill: #000033; text-anchor: middle; alignment-baseline: middle; }
+        .text-xs { font-family: Arial, sans-serif; font-size: 11px; font-weight: bold; fill: #000033; text-anchor: middle; alignment-baseline: middle; }
+        .direction-box { fill: #ffffff; stroke: #000000; stroke-width: 2; rx: 8; }
+        .direction-text { font-family: Arial, sans-serif; font-size: 22px; font-weight: bold; fill: #000000; text-anchor: middle; alignment-baseline: middle; }
+        
+        .path-line { fill: none; stroke: #0066ff; stroke-width: 3; stroke-dasharray: 8, 5; }
+        .path-node { fill: #ffffff; stroke: #ff0000; stroke-width: 3; r: 6; }
+        
+        #animated-dot { fill: #0066ff; filter: drop-shadow(0px 0px 4px rgba(0,102,255,0.8)); transition: all 0.1s linear; }
+    </style>
+    <!-- SVG Pan Zoom Library -->
+    <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+</head>
+<body>
+
+    <div id="ui-panel">
+        <div class="form-group">
+            <label for="source">Source:</label>
+            <select id="source">
+                <option value="MainEntrance">Main Entrance</option>
+                <option value="Reception">Reception</option>
+                <option value="SecondEntrance">Second Entrance</option>
+                <option value="ElectricalCabin">Electrical Cabin</option>
+                <option value="AILab">AI Laboratory</option>
+                <option value="DSLab">DS Laboratory</option>
+                <option value="CoreSpace">Core Space</option>
+                <option value="YuvarajSir">Yuvaraj Sir Cabin</option>
+                <option value="CDCHall">CDC Hall</option>
+                <option value="StudentRestEast">Student Rest Room (East)</option>
+                <option value="AIDS_B">2nd Year AI-DS B</option>
+                <option value="AIDS_A">2nd Year AI-DS A</option>
+                <option value="CSEC">2nd Year CSE-C</option>
+                <option value="LiftEast">Lift (East)</option>
+                <option value="StaircaseEast">Staircase (East)</option>
+                <option value="NewBuilding">New Building</option>
+                <option value="SDCHall">SDC Hall</option>
+                <option value="LiftWest">Lift (West)</option>
+                <option value="StudentRestWest">Student Rest Room (West)</option>
+                <option value="StaircaseWest">Staircase (West)</option>
+                <option value="PrincipalRoom">Principal Room</option>
+                <option value="StaffRestRoom">Staff Rest Room</option>
+                <option value="KnowledgeHub">Knowledge Hub</option>
+                <option value="MathLab">Math Lab</option>
+                <option value="Library">Library</option>
+                <option value="CashCounter">Cash Counter</option>
+                <option value="AdmissionCentre">Admission Centre</option>
+                <option value="ScholarshipCounter">Scholarship Counter</option>
+                <option value="AmphiTheatre">Amphi Theatre</option>
+                <option value="ViscomHall">Viscom Hall</option>
+                <option value="Stage">Stage</option>
+                <option value="BoardRoom">Board Room</option>
+                <option value="IdeaHub">Idea Hub</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="destination">Destination:</label>
+            <select id="destination">
+                 <option value="MainEntrance">Main Entrance</option>
+                 <option value="Reception">Reception</option>
+                 <option value="SecondEntrance">Second Entrance</option>
+                 <option value="ElectricalCabin">Electrical Cabin</option>
+                 <option value="AILab">AI Laboratory</option>
+                 <option value="DSLab">DS Laboratory</option>
+                 <option value="CoreSpace">Core Space</option>
+                 <option value="YuvarajSir">Yuvaraj Sir Cabin</option>
+                 <option value="CDCHall">CDC Hall</option>
+                 <option value="StudentRestEast">Student Rest Room (East)</option>
+                 <option value="AIDS_B">2nd Year AI-DS B</option>
+                 <option value="AIDS_A">2nd Year AI-DS A</option>
+                 <option value="CSEC">2nd Year CSE-C</option>
+                 <option value="LiftEast">Lift (East)</option>
+                 <option value="StaircaseEast">Staircase (East)</option>
+                 <option value="NewBuilding">New Building</option>
+                 <option value="SDCHall">SDC Hall</option>
+                 <option value="LiftWest">Lift (West)</option>
+                 <option value="StudentRestWest">Student Rest Room (West)</option>
+                 <option value="StaircaseWest">Staircase (West)</option>
+                 <option value="PrincipalRoom">Principal Room</option>
+                 <option value="StaffRestRoom">Staff Rest Room</option>
+                 <option value="KnowledgeHub">Knowledge Hub</option>
+                 <option value="MathLab">Math Lab</option>
+                 <option value="Library">Library</option>
+                 <option value="CashCounter">Cash Counter</option>
+                 <option value="AdmissionCentre">Admission Centre</option>
+                 <option value="ScholarshipCounter">Scholarship Counter</option>
+                 <option value="AmphiTheatre">Amphi Theatre</option>
+                 <option value="ViscomHall">Viscom Hall</option>
+                 <option value="Stage">Stage</option>
+                 <option value="BoardRoom">Board Room</option>
+                 <option value="IdeaHub" selected>Idea Hub</option>
+            </select>
+        </div>
+        <button id="navigate-btn">Navigate Route</button>
+        <div id="status">Ready.</div>
+    </div>
+
+    <div id="map-container">
+        <svg id="campus-map" viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg">
+            <g id="map-content">
+                <!-- Background & Corridors -->
+                <rect class="wall" x="80" y="80" width="1040" height="740" />
+                <rect class="corridor" x="100" y="100" width="1000" height="700" />
+                
+                <rect class="wall" x="490" y="340" width="220" height="280" />
+                <rect class="corridor" x="500" y="350" width="200" height="260" />
+                
+                <circle cx="600" cy="480" r="30" fill="#f0f0f0" stroke="#000" stroke-width="2"/>
+                <circle cx="600" cy="480" r="20" fill="#a0c4ff" stroke="#000" stroke-width="2"/>
+                <circle cx="600" cy="480" r="10" fill="#f4e04d" stroke="#000" stroke-width="1"/>
+
+                <!-- Grass & Trees -->
+                <rect x="740" y="340" width="200" height="300" fill="#000" />
+                <rect x="750" y="350" width="180" height="280" fill="#73d936" stroke="#000" stroke-width="2"/>
+                <rect x="360" y="350" width="90" height="150" fill="#000" />
+                <rect x="370" y="360" width="70" height="130" fill="#73d936" stroke="#000" stroke-width="2"/>
+                <circle cx="830" cy="400" r="20" fill="#2d6a4f" stroke="#000" stroke-width="2"/><circle cx="860" cy="420" r="15" fill="#1b4332" stroke="#000" stroke-width="2"/>
+                <circle cx="780" cy="580" r="20" fill="#2d6a4f" stroke="#000" stroke-width="2"/><circle cx="810" cy="600" r="18" fill="#1b4332" stroke="#000" stroke-width="2"/>
+
+                <!-- Top Wing -->
+                <g stroke="#000" stroke-width="3">
+                    <rect x="170" y="95" width="80" height="60" fill="#f9e770" />
+                    <rect x="260" y="95" width="190" height="60" fill="#9bc6ff" />
+                    <rect x="460" y="95" width="255" height="60" fill="#9bc6ff" />
+                    <rect x="725" y="95" width="295" height="60" fill="#d9bbf9" />
+                    <rect x="1030" y="95" width="60" height="60" fill="#fbd394" />
+                </g>
+
+                <!-- Left Wing -->
+                <g stroke="#000" stroke-width="3">
+                    <rect x="95" y="165" width="150" height="70" fill="#ffb3cc" />
+                    <rect x="95" y="245" width="90" height="60" fill="#9bc6ff" />
+                    <rect x="95" y="315" width="90" height="65" fill="#f9e770" />
+                    <rect x="95" y="390" width="90" height="65" fill="#f9e770" />
+                    <rect x="95" y="465" width="90" height="65" fill="#f9e770" />
+                    <rect x="95" y="540" width="70" height="50" fill="#c6a1f9" />
+                    <rect x="95" y="600" width="80" height="55" fill="#e0e0e0" /> 
+                    <rect x="95" y="665" width="90" height="80" fill="#ffb3cc" />
+                </g>
+
+                <!-- Right Wing -->
+                <g stroke="#000" stroke-width="3">
+                    <polygon points="1060,165 1105,165 1105,285 1025,285 1025,200" fill="#a0f4a0" />
+                    <rect x="1035" y="295" width="70" height="50" fill="#c6a1f9" />
+                    <rect x="1025" y="355" width="80" height="65" fill="#9bc6ff" />
+                    <rect x="1035" y="430" width="70" height="55" fill="#fbd394" />
+                    <rect x="1035" y="495" width="70" height="50" fill="#e0e0e0" /> 
+                    <rect x="1025" y="555" width="80" height="80" fill="#d9bbf9" />
+                    <rect x="1035" y="645" width="70" height="100" fill="#9bc6ff" />
+                </g>
+
+                <!-- Bottom Wing -->
+                <g stroke="#000" stroke-width="3">
+                    <rect x="195" y="685" width="115" height="60" fill="#d9bbf9" />
+                    <rect x="320" y="685" width="80" height="60" fill="#9bc6ff" />
+                    <rect x="410" y="685" width="105" height="60" fill="#a0f4a0" />
+                    <rect x="700" y="685" width="95" height="60" fill="#9bc6ff" />
+                    <rect x="805" y="685" width="100" height="60" fill="#a0f4a0" />
+                    <rect x="915" y="685" width="100" height="60" fill="#fbd394" />
+                    <rect x="540" y="610" width="120" height="65" fill="#ffb3cc" /> 
+                    <rect x="540" y="685" width="120" height="80" fill="#ffffff" /> 
+                    <line x1="520" y1="775" x2="680" y2="775" stroke="#000" stroke-width="2"/>
+                    <line x1="520" y1="790" x2="680" y2="790" stroke="#000" stroke-width="2"/>
+                    <rect x="500" y="765" width="200" height="40" fill="none" /> 
+                </g>
+
+                <!-- Center Blocks -->
+                <g stroke="#000" stroke-width="3">
+                    <rect x="375" y="175" width="325" height="135" fill="#fde4a7" /> 
+                    <rect x="715" y="175" width="165" height="135" fill="#ffb3cc" /> 
+                    <rect x="230" y="350" width="120" height="110" fill="#ffb3cc" /> 
+                    <rect x="220" y="520" width="155" height="145" fill="#a0f4a0" /> 
+                    <rect x="385" y="530" width="70" height="90" fill="#9bc6ff" /> 
+                </g>
+
+                <!-- Obstacles -->
+                <g stroke="#000" stroke-width="3">
+                    <rect x="260" y="165" width="65" height="70" fill="#e0e0e0" /> 
+                    <rect x="230" y="275" width="50" height="45" fill="#73d936" /> 
+                    <circle cx="245" cy="290" r="5" fill="#ff0000"/><circle cx="265" cy="305" r="5" fill="#ff0000"/>
+                </g>
+                <rect x="895" y="200" width="55" height="70" fill="#e0e0e0" stroke="#000" stroke-width="3"/>
+
+                <!-- Room Labels -->
+                <text x="210" y="115" class="text-xs">Electrical</text><text x="210" y="135" class="text-xs">Cabin</text>
+                <text x="355" y="130" class="text-sm">AI Laboratory</text>
+                <text x="585" y="130" class="text-sm">DS Laboratory</text>
+                <text x="870" y="130" class="text-sm">Core Space</text>
+                <text x="1060" y="115" class="text-xs">Yuvaraj</text><text x="1060" y="135" class="text-xs">Sir Cabin</text>
+                <text x="170" y="205" class="text-sm">CDC Hall</text>
+                <text x="140" y="270" class="text-xs">Student</text><text x="140" y="285" class="text-xs">Rest Room</text>
+                <text x="140" y="340" class="text-xs">2nd Year</text><text x="140" y="355" class="text-xs">AI-DS B</text>
+                <text x="140" y="415" class="text-xs">2nd Year</text><text x="140" y="430" class="text-xs">AI-DS A</text>
+                <text x="140" y="490" class="text-xs">2nd Year</text><text x="140" y="505" class="text-xs">CSE-C</text>
+                <text x="130" y="570" class="text-sm">Lift</text>
+                <text x="135" y="632" class="text-xs">Staircase</text>
+                <text x="140" y="695" class="text-xs">New</text><text x="140" y="710" class="text-xs">Building</text>
+                <text x="1065" y="235" class="text-sm">SDC</text><text x="1065" y="255" class="text-sm">Hall</text>
+                <text x="1070" y="325" class="text-sm">Lift</text>
+                <text x="1065" y="380" class="text-xs">Student</text><text x="1065" y="395" class="text-xs">Rest Room</text>
+                <text x="1070" y="450" class="text-xs">Second</text><text x="1070" y="465" class="text-xs">Entrance</text>
+                <text x="1070" y="525" class="text-xs">Staircase</text>
+                <text x="1065" y="585" class="text-xs">Principal</text><text x="1065" y="600" class="text-xs">Room</text>
+                <text x="1070" y="685" class="text-xs">Staff</text><text x="1070" y="700" class="text-xs">Rest Room</text>
+                <text x="252" y="720" class="text-xs">Knowledge Hub</text>
+                <text x="360" y="720" class="text-xs">Math Lab</text>
+                <text x="462" y="720" class="text-xs">Library</text>
+                <text x="600" y="640" class="text-xs">Reception</text>
+                <text x="600" y="730" class="text-sm">Main Entrance</text>
+                <text x="747" y="720" class="text-xs">Cash Counter</text>
+                <text x="855" y="710" class="text-xs">Admission</text><text x="855" y="725" class="text-xs">Centre</text>
+                <text x="965" y="710" class="text-xs">Scholarship</text><text x="965" y="725" class="text-xs">Counter</text>
+                <text x="535" y="245" class="text-main">Amphi Theatre</text>
+                <text x="795" y="235" class="text-main" fill="#3a0ca3">Viscom</text><text x="795" y="260" class="text-main" fill="#3a0ca3">Hall</text>
+                <text x="290" y="415" class="text-main" fill="#3a0ca3">Stage</text>
+                <text x="295" y="600" class="text-main">Board Room</text>
+                <text x="420" y="580" class="text-xs">Idea Hub</text>
+
+                <!-- Direction Labels -->
+                <rect class="direction-box" x="540" y="30" width="120" height="40" />
+                <text x="600" y="57" class="direction-text">South</text>
+                <rect class="direction-box" x="540" y="830" width="120" height="40" />
+                <text x="600" y="857" class="direction-text">North</text>
+                <rect class="direction-box" x="30" y="410" width="40" height="100" />
+                <text x="57" y="460" class="direction-text" transform="rotate(-90 57 460)">East</text>
+                <rect class="direction-box" x="1130" y="410" width="40" height="100" />
+                <text x="1157" y="460" class="direction-text" transform="rotate(90 1157 460)">West</text>
+
+                <!-- Route Network -->
+                <path class="path-line" d="
+                    M 600 660 L 600 680 L 470 680 L 200 680 L 200 240 
+                    L 215 240 L 215 260 L 295 260 L 295 235 L 340 235
+                    L 340 165 L 1000 165 L 1000 680 L 720 680 L 600 680
+                " />
+
+                <!-- Map Nodes -->
+                <g id="nodes-group">
+                    <circle cx="600" cy="660" class="path-node" />
+                    <circle cx="600" cy="680" class="path-node" />
+                    <circle cx="470" cy="680" class="path-node" />
+                    <circle cx="365" cy="680" class="path-node" />
+                    <circle cx="280" cy="680" class="path-node" />
+                    <circle cx="200" cy="680" class="path-node" />
+                    <circle cx="200" cy="550" class="path-node" />
+                    <circle cx="200" cy="450" class="path-node" />
+                    <circle cx="200" cy="350" class="path-node" />
+                    <circle cx="200" cy="275" class="path-node" />
+                    <circle cx="200" cy="240" class="path-node" />
+                    <circle cx="215" cy="240" class="path-node" />
+                    <circle cx="215" cy="260" class="path-node" />
+                    <circle cx="295" cy="260" class="path-node" />
+                    <circle cx="295" cy="235" class="path-node" />
+                    <circle cx="340" cy="235" class="path-node" />
+                    <circle cx="340" cy="165" class="path-node" />
+                    <circle cx="470" cy="165" class="path-node" />
+                    <circle cx="600" cy="165" class="path-node" />
+                    <circle cx="735" cy="165" class="path-node" />
+                    <circle cx="875" cy="165" class="path-node" />
+                    <circle cx="1000" cy="165" class="path-node" />
+                    <circle cx="1000" cy="225" class="path-node" />
+                    <circle cx="1000" cy="315" class="path-node" />
+                    <circle cx="1000" cy="390" class="path-node" />
+                    <circle cx="1000" cy="460" class="path-node" />
+                    <circle cx="1000" cy="540" class="path-node" />
+                    <circle cx="1000" cy="610" class="path-node" />
+                    <circle cx="1000" cy="680" class="path-node" />
+                    <circle cx="870" cy="680" class="path-node" />
+                    <circle cx="735" cy="680" class="path-node" />
+                </g>
+
+                <circle id="animated-dot" cx="600" cy="660" r="10" display="none" />
+            </g>
+        </svg>
+    </div>
+
+    <script>
+        // Initialize the Pan and Zoom Feature
+        window.onload = function() {
+            window.panZoom = svgPanZoom('#campus-map', {
+                zoomEnabled: true,
+                controlIconsEnabled: true,
+                fit: true,
+                center: true,
+                minZoom: 0.5,
+                maxZoom: 10
+            });
+        };
+
+        // Graph coordinate map
+        const nodes = {
+            'N_Recpt_Door': { x: 600, y: 660 }, 'N_Recpt_Hall': { x: 600, y: 680 },
+            'N_Bot_Lib': { x: 470, y: 680 }, 'N_Bot_Math': { x: 365, y: 680 },
+            'N_Bot_Know': { x: 280, y: 680 }, 'BL_Corner': { x: 200, y: 680 },
+            'N_Left_Board': { x: 200, y: 550 }, 'N_Left_Stage': { x: 200, y: 450 },
+            'N_Left_AIDS': { x: 200, y: 350 }, 'N_Left_CDC': { x: 200, y: 275 },
+            'W1': { x: 200, y: 240 }, 'W2': { x: 215, y: 240 }, 'W3': { x: 215, y: 260 },
+            'W4': { x: 295, y: 260 }, 'W5': { x: 295, y: 235 }, 'W6': { x: 340, y: 235 },
+            'TL_Corner': { x: 340, y: 165 }, 'N_Top_DS': { x: 470, y: 165 },
+            'N_Top_Mid': { x: 600, y: 165 }, 'N_Top_Core': { x: 735, y: 165 },
+            'N_Top_Yuv': { x: 875, y: 165 }, 'TR_Corner': { x: 1000, y: 165 },
+            'N_Right_SDC': { x: 1000, y: 225 }, 'N_Right_Lift': { x: 1000, y: 315 },
+            'N_Right_Rest': { x: 1000, y: 390 }, 'N_Right_Sec': { x: 1000, y: 460 },
+            'N_Right_Stair': { x: 1000, y: 540 }, 'N_Right_Princ': { x: 1000, y: 610 },
+            'BR_Corner': { x: 1000, y: 680 }, 'N_Bot_Admin': { x: 870, y: 680 }, 
+            'N_Bot_Cash': { x: 735, y: 680 }
+        };
+
+        const edges = [
+            ['N_Recpt_Door', 'N_Recpt_Hall'], ['N_Recpt_Hall', 'N_Bot_Lib'], ['N_Bot_Lib', 'N_Bot_Math'],
+            ['N_Bot_Math', 'N_Bot_Know'], ['N_Bot_Know', 'BL_Corner'], ['BL_Corner', 'N_Left_Board'],
+            ['N_Left_Board', 'N_Left_Stage'], ['N_Left_Stage', 'N_Left_AIDS'], ['N_Left_AIDS', 'N_Left_CDC'],
+            ['N_Left_CDC', 'W1'], ['W1', 'W2'], ['W2', 'W3'], ['W3', 'W4'], ['W4', 'W5'], ['W5', 'W6'],
+            ['W6', 'TL_Corner'], ['TL_Corner', 'N_Top_DS'], ['N_Top_DS', 'N_Top_Mid'], ['N_Top_Mid', 'N_Top_Core'],
+            ['N_Top_Core', 'N_Top_Yuv'], ['N_Top_Yuv', 'TR_Corner'], ['TR_Corner', 'N_Right_SDC'],
+            ['N_Right_SDC', 'N_Right_Lift'], ['N_Right_Lift', 'N_Right_Rest'], ['N_Right_Rest', 'N_Right_Sec'],
+            ['N_Right_Sec', 'N_Right_Stair'], ['N_Right_Stair', 'N_Right_Princ'], ['N_Right_Princ', 'BR_Corner'],
+            ['BR_Corner', 'N_Bot_Admin'], ['N_Bot_Admin', 'N_Bot_Cash'], ['N_Bot_Cash', 'N_Recpt_Hall']
+        ];
+
+        const locationMap = {
+            'MainEntrance': 'N_Recpt_Hall', 'Reception': 'N_Recpt_Door', 'SecondEntrance': 'N_Right_Sec',
+            'ElectricalCabin': 'TL_Corner', 'AILab': 'TL_Corner', 'DSLab': 'N_Top_DS',
+            'CoreSpace': 'N_Top_Yuv', 'YuvarajSir': 'TR_Corner', 'CDCHall': 'W1',
+            'StudentRestEast': 'N_Left_CDC', 'AIDS_B': 'N_Left_AIDS', 'AIDS_A': 'N_Left_Stage',
+            'CSEC': 'N_Left_Stage', 'LiftEast': 'N_Left_Board', 'StaircaseEast': 'N_Left_Board',
+            'NewBuilding': 'BL_Corner', 'SDCHall': 'N_Right_SDC', 'LiftWest': 'N_Right_Lift',
+            'StudentRestWest': 'N_Right_Rest', 'StaircaseWest': 'N_Right_Stair', 
+            'PrincipalRoom': 'N_Right_Princ', 'StaffRestRoom': 'BR_Corner',
+            'KnowledgeHub': 'N_Bot_Know', 'MathLab': 'N_Bot_Math', 'Library': 'N_Bot_Lib',
+            'CashCounter': 'N_Bot_Cash', 'AdmissionCentre': 'N_Bot_Admin', 'ScholarshipCounter': 'BR_Corner',
+            'AmphiTheatre': 'N_Top_Mid', 'ViscomHall': 'N_Top_Core', 'Stage': 'N_Left_Stage',
+            'BoardRoom': 'N_Bot_Know', 'IdeaHub': 'N_Bot_Math'
+        };
+
+        let currentAnimation = null;
+
+        function findShortestPath(startNode, endNode) {
+            const distances = {}, prev = {}, queue = [];
+            for (let v in nodes) { distances[v] = Infinity; prev[v] = null; queue.push(v); }
+            distances[startNode] = 0;
+
+            while (queue.length > 0) {
+                queue.sort((a, b) => distances[a] - distances[b]);
+                const u = queue.shift();
+                if (u === endNode) break;
+
+                edges.forEach(edge => {
+                    if (edge.includes(u)) {
+                        const neighbor = edge[0] === u ? edge[1] : edge[0];
+                        if (queue.includes(neighbor)) {
+                            const dist = Math.hypot(nodes[u].x - nodes[neighbor].x, nodes[u].y - nodes[neighbor].y);
+                            if (distances[u] + dist < distances[neighbor]) { 
+                                distances[neighbor] = distances[u] + dist; 
+                                prev[neighbor] = u; 
+                            }
+                        }
+                    }
+                });
+            }
+            const path = []; let u = endNode;
+            while (prev[u]) { path.unshift(u); u = prev[u]; }
+            if (path.length > 0) path.unshift(startNode);
+            return path;
+        }
+
+        document.getElementById('navigate-btn').addEventListener('click', () => {
+            const src = document.getElementById('source').value;
+            const dest = document.getElementById('destination').value;
+            const status = document.getElementById('status');
+
+            if (src === dest) {
+                status.innerText = "Already at destination.";
+                return;
+            }
+
+            const pathNodes = findShortestPath(locationMap[src], locationMap[dest]);
+            
+            if (pathNodes.length > 0) {
+                const dot = document.getElementById('animated-dot');
+                dot.style.display = 'block';
+                status.innerText = "Routing...";
+                
+                if (currentAnimation) clearInterval(currentAnimation);
+                
+                let i = 0;
+                dot.setAttribute('cx', nodes[pathNodes[0]].x);
+                dot.setAttribute('cy', nodes[pathNodes[0]].y);
+
+                currentAnimation = setInterval(() => {
+                    i++;
+                    if (i >= pathNodes.length) {
+                        clearInterval(currentAnimation);
+                        status.innerText = "Arrived!";
+                        return;
+                    }
+                    dot.setAttribute('cx', nodes[pathNodes[i]].x);
+                    dot.setAttribute('cy', nodes[pathNodes[i]].y);
+                }, 400);
+            }
+        });
+    </script>
+</body>
+</html>
