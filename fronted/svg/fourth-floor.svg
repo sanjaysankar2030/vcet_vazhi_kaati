@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="campus-map-F4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Fourth Floor">
+  <style>
+
+svg { background: #e0e0e0; }
+.corridor-base { fill:none; stroke:#000; stroke-width:14; stroke-linejoin:round; stroke-linecap:round; }
+.corridor-inner { fill:none; stroke:#fff; stroke-width:10; stroke-linejoin:round; stroke-linecap:round; }
+.text-main { font-family:Arial,sans-serif; font-size:18px; font-weight:bold; fill:#000033; text-anchor:middle; alignment-baseline:middle; }
+.text-sm { font-family:Arial,sans-serif; font-size:13px; font-weight:bold; fill:#000033; text-anchor:middle; alignment-baseline:middle; }
+.text-xs { font-family:Arial,sans-serif; font-size:11px; font-weight:bold; fill:#000033; text-anchor:middle; alignment-baseline:middle; }
+.direction-box { fill:#fff; stroke:#000; stroke-width:2; rx:8; }
+.direction-text { font-family:Arial,sans-serif; font-size:22px; font-weight:bold; fill:#000; text-anchor:middle; alignment-baseline:middle; }
+.door-rect { fill:#fff; stroke:#000; stroke-width:2; rx:2; }
+.path-line { fill:none; stroke:#6699ff; stroke-width:2; stroke-dasharray:8,5; opacity:.6; }
+.path-node { fill:#fff; stroke:#ff9999; stroke-width:2; opacity:.6; }
+.door-node { fill:#fc0; stroke:#c00; stroke-width:2; opacity:.8; }
+.route-highlight { fill:none; stroke:#0055ff; stroke-width:6; stroke-linecap:round; stroke-linejoin:round; opacity:.85; }
+#animated-dot { fill:#0022aa; stroke:#fff; stroke-width:2; }
+#live-dot { fill:#28a745; stroke:#fff; stroke-width:2; }
+#pulse-ring { fill:none; stroke:#28a745; stroke-width:2; }
+.room { stroke:#000; stroke-width:2.5; }
+.room-label { font-family:Arial,sans-serif; font-size:11px; font-weight:bold; fill:#000033; text-anchor:middle; alignment-baseline:middle; }
+.room-label-sm { font-family:Arial,sans-serif; font-size:9px; font-weight:bold; fill:#000033; text-anchor:middle; alignment-baseline:middle; }
+.room-label-lg { font-family:Arial,sans-serif; font-size:13px; font-weight:bold; fill:#000033; text-anchor:middle; alignment-baseline:middle; }
+
+  </style>
+  <g id="floor-F4">
+                        <g id="main-corridors-F4">
+                            <path class="corridor-base" d="M 200 165 L 1010 165 L 1010 675 L 200 675 Z M 600 675 L 600 635" />
+                            <path class="corridor-inner" d="M 200 165 L 1010 165 L 1010 675 L 200 675 Z M 600 675 L 600 635" />
+                        </g>
+
+                        <rect x="360" y="340" width="480" height="300" fill="#cbe3f5" opacity="0.5" stroke="#333" stroke-dasharray="10,10"/>
+                        <text x="600" y="480" class="text-main" fill="#666">Open to Courtyard Below</text>
+                        <g stroke="#000" stroke-width="3">
+                            <rect x="170" y="95" width="80" height="60" fill="#fbd394" />
+                            <rect x="260" y="95" width="190" height="60" fill="#fbd394" />
+                            <rect x="460" y="95" width="255" height="60" fill="#ffb3cc" />
+                            <rect x="725" y="95" width="295" height="60" fill="#a0f4a0" />
+                            <rect x="1030" y="95" width="60" height="60" fill="#f9e770" />
+                        </g>
+                        <g stroke="#000" stroke-width="3">
+                            <rect x="95" y="165" width="150" height="70" fill="#9bc6ff" />
+                            <rect x="95" y="245" width="90" height="60" fill="#d9bbf9" />
+                            <rect x="95" y="315" width="90" height="65" fill="#fbd394" />
+                            <rect x="95" y="390" width="90" height="65" fill="#ffb3cc" />
+                            <rect x="95" y="465" width="90" height="65" fill="#a0f4a0" />
+                            <rect x="95" y="540" width="70" height="50" fill="#c6a1f9" />
+                            <rect x="95" y="600" width="80" height="55" fill="#e0e0e0" /> 
+                            <rect x="95" y="665" width="90" height="80" fill="#9bc6ff" />
+                        </g>
+                        <g stroke="#000" stroke-width="3">
+                            <polygon points="1060,165 1105,165 1105,285 1025,285 1025,200" fill="#ffb3cc" />
+                            <rect x="1035" y="295" width="70" height="50" fill="#f9e770" />
+                            <rect x="1025" y="355" width="80" height="65" fill="#a0f4a0" />
+                            <rect x="1035" y="430" width="70" height="55" fill="#9bc6ff" />
+                            <rect x="1035" y="495" width="70" height="50" fill="#e0e0e0" /> 
+                            <rect x="1025" y="555" width="80" height="80" fill="#fbd394" />
+                            <rect x="1035" y="645" width="70" height="100" fill="#c6a1f9" />
+                        </g>
+                        <g stroke="#000" stroke-width="3">
+                            <rect x="195" y="685" width="115" height="60" fill="#a0f4a0" />
+                            <rect x="320" y="685" width="80" height="60" fill="#ffb3cc" />
+                            <rect x="410" y="685" width="105" height="60" fill="#d9bbf9" />
+                            <rect x="700" y="685" width="95" height="60" fill="#fbd394" />
+                            <rect x="805" y="685" width="100" height="60" fill="#9bc6ff" />
+                            <rect x="915" y="685" width="100" height="60" fill="#f9e770" />
+                        </g>
+                        <g stroke="#000" stroke-width="3">
+                            <rect x="715" y="175" width="165" height="135" fill="#ffb3cc" /> 
+                            <rect x="220" y="520" width="155" height="145" fill="#a0f4a0" /> 
+                        </g>
+                        <g stroke="#000" stroke-width="3">
+                            <rect x="260" y="165" width="65" height="70" fill="#e0e0e0" />
+                            <rect x="895" y="200" width="55" height="70" fill="#e0e0e0" />
+                            <rect x="560" y="635" width="80" height="35" fill="#e0e0e0" />
+                        </g>
+
+                        <g class="physical-doors">
+                            <rect x="878" y="277" width="4" height="16" class="door-rect" />
+                            <rect x="287" y="663" width="16" height="4" class="door-rect" />
+                            <rect x="202" y="153" width="16" height="4" class="door-rect" />
+                            <rect x="347" y="153" width="16" height="4" class="door-rect" />
+                            <rect x="577" y="153" width="16" height="4" class="door-rect" />
+                            <rect x="862" y="153" width="16" height="4" class="door-rect" />
+                            <rect x="183" y="672" width="4" height="16" class="door-rect" />
+                        </g>
+                        
+                        <text x="210" y="125" class="text-sm">F4 Room 1</text>
+                        <text x="355" y="125" class="text-sm">F4 Lab A</text>
+                        <text x="585" y="125" class="text-sm">F4 Lab B</text>
+                        <text x="870" y="125" class="text-sm">F4 Seminar Hall</text>
+                        <text x="170" y="200" class="text-sm">F4 Room 2</text>
+                        
+                        <text x="795" y="235" class="text-main" fill="purple">F4 Viscom</text>
+                        <text x="795" y="260" class="text-main" fill="purple">Hall</text>
+                        <text x="295" y="600" class="text-main" fill="purple">F4 Board Room</text>
+                        
+                        <text x="292" y="205" class="text-xs">F4 Staircase</text>
+                        <text x="922" y="240" class="text-xs">F4 Staircase</text>
+                        <text x="600" y="653" class="text-xs">F4 Staircase</text>
+
+                        <g id="dynamic-paths-F4"></g><g id="dynamic-nodes-F4"></g><path id="highlighted-path-F4" class="route-highlight" d="" />
+                    </g>
+</svg>
