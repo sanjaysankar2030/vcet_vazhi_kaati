@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<svg id="campus-map-F2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Second Floor">
+  <style>
+    svg { background: #e0e0e0; }
+    .corridor-base { fill:none; stroke:#000; stroke-width:14; stroke-linejoin:round; stroke-linecap:round; }
+    .corridor-inner { fill:none; stroke:#fff; stroke-width:10; stroke-linejoin:round; stroke-linecap:round; }
+    .text-main { font-family:Arial,sans-serif; font-size:18px; font-weight:bold; fill:#000033; text-anchor:middle; alignment-baseline:middle; }
+    .text-sm { font-family:Arial,sans-serif; font-size:13px; font-weight:bold; fill:#000033; text-anchor:middle; alignment-baseline:middle; }
+    .text-xs { font-family:Arial,sans-serif; font-size:11px; font-weight:bold; fill:#000033; text-anchor:middle; alignment-baseline:middle; }
+    .text-courtyard { font-family:Arial,sans-serif; font-size:15px; font-weight:normal; fill:#666; text-anchor:middle; }
+    .direction-box { fill:#fff; stroke:#000; stroke-width:2; rx:8; }
+    .direction-text { font-family:Arial,sans-serif; font-size:22px; font-weight:bold; fill:#000; text-anchor:middle; alignment-baseline:middle; }
+    .door-rect { fill:#fff; stroke:#000; stroke-width:2; rx:2; }
+    .path-line { fill:none; stroke:#6699ff; stroke-width:2; stroke-dasharray:8,5; opacity:.6; }
+    .path-node { fill:#fff; stroke:#ff9999; stroke-width:2; opacity:.6; }
+    .door-node { fill:#fc0; stroke:#c00; stroke-width:2; opacity:.8; }
+    .route-highlight { fill:none; stroke:#0055ff; stroke-width:6; stroke-linecap:round; stroke-linejoin:round; opacity:.85; }
+    #animated-dot { fill:#0022aa; stroke:#fff; stroke-width:2; }
+    #live-dot { fill:#28a745; stroke:#fff; stroke-width:2; }
+    #pulse-ring { fill:none; stroke:#28a745; stroke-width:2; }
+    .room rect, .room polygon, .room path { stroke: #000000; stroke-width: 2.5; }
+    .room-label { font-family:Arial,sans-serif; font-size:11px; font-weight:bold; fill:#000033; text-anchor:middle; alignment-baseline:middle; }
+    .room-label-sm { font-family:Arial,sans-serif; font-size:9px; font-weight:bold; fill:#000033; text-anchor:middle; alignment-baseline:middle; }
+    .room-label-lg { font-family:Arial,sans-serif; font-size:13px; font-weight:bold; fill:#000033; text-anchor:middle; alignment-baseline:middle; }
+    .room-label-white { fill:#fff; }
+    .label-accent { fill:#3a0ca3; }
+  </style>
+  <g id="floor-F2">
+
+<defs>
+  <style>
+    #floor-F2 .corridor-base { fill: none; stroke: #000000; stroke-width: 16; stroke-linejoin: round; stroke-linecap: round; }
+    #floor-F2 .corridor-inner { fill: none; stroke: #ffffff; stroke-width: 12; stroke-linejoin: round; stroke-linecap: round; }
+    #floor-F2 .room-label { font-family: Arial, sans-serif; font-size: 11px; font-weight: normal; fill: #000033; text-anchor: middle; alignment-baseline: middle; }
+    #floor-F2 .room-label-sm { font-family: Arial, sans-serif; font-size: 9px; font-weight: normal; fill: #000033; text-anchor: middle; alignment-baseline: middle; }
+    #floor-F2 .room-label-lg { font-family: Arial, sans-serif; font-size: 13px; font-weight: normal; fill: #000033; text-anchor: middle; alignment-baseline: middle; }
+    #floor-F2 .door-rect { fill: #ffffff; stroke: #000000; stroke-width: 2; rx: 2; }
+
+  </style>
+</defs>
+
+<g id="floor-F2-detailed-map">
+
+    <rect x="70" y="70" width="1060" height="760" fill="#e0e0e0" stroke="#000" stroke-width="5"/>
+
+
+    <path class="corridor-base" d="M 170 165 L 1030 165 L 1030 745 L 170 745 Z" />
+    <path class="corridor-inner" d="M 170 165 L 1030 165 L 1030 745 L 170 745 Z" />
+
+
+    <rect x="330" y="295" width="540" height="320" fill="#cbe3f5" opacity="0.4" stroke="#333" stroke-dasharray="8,8"/>
+    <text x="600" y="455" class="text-courtyard">Open Courtyard Below</text>
+
+
+    <g class="room">
+
+      <rect x="130" y="95" width="75" height="70" fill="#fbd394" />
+      <text x="167.5" y="125" class="room-label"><tspan x="167.5" dy="0">electric</tspan><tspan x="167.5" dy="13">cabin</tspan></text>
+
+
+      <rect x="205" y="95" width="165" height="70" fill="#9bc6ff" />
+      <text x="287.5" y="123" class="room-label"><tspan x="287.5" dy="0">Biomedical</tspan><tspan x="287.5" dy="13">Instrument Lab 220</tspan></text>
+
+
+      <rect x="370" y="95" width="210" height="70" fill="#9bc6ff" />
+      <text x="475" y="130" class="room-label-lg">Sangamam Hall 222</text>
+
+
+      <rect x="580" y="95" width="280" height="70" fill="#d9bbf9" />
+      <text x="720" y="130" class="room-label-lg">Sangamam Hall 223</text>
+
+
+      <rect x="860" y="95" width="170" height="70" fill="#fbd394" />
+      <text x="945" y="130" class="room-label">Storage / Area</text>
+    </g>
+
+
+    <g class="room">
+
+      <polygon points="1030,165 1080,165 1080,235 1030,235" fill="#a0f4a0" />
+      <rect x="1030" y="165" width="85" height="70" fill="#a0f4a0" />
+      <text x="1072.5" y="200" class="room-label">II IT B 201</text>
+
+
+      <rect x="1030" y="235" width="85" height="70" fill="#9bc6ff" />
+      <text x="1072.5" y="263" class="room-label"><tspan x="1072.5" dy="0">III IT B</tspan><tspan x="1072.5" dy="13">classroom 202</tspan></text>
+
+
+      <rect x="1030" y="305" width="85" height="70" fill="#9bc6ff" />
+      <text x="1072.5" y="333" class="room-label"><tspan x="1072.5" dy="0">IV IT B</tspan><tspan x="1072.5" dy="13">classroom 203</tspan></text>
+
+
+      <rect x="1030" y="375" width="85" height="70" fill="#f9e770" />
+      <text x="1072.5" y="403" class="room-label"><tspan x="1072.5" dy="0">Student</tspan><tspan x="1072.5" dy="13">Restroom</tspan></text>
+
+
+      <rect x="1030" y="445" width="85" height="60" fill="#e0e0e0" />
+      <text x="1072.5" y="478" class="room-label">Staircase</text>
+
+
+      <rect x="1030" y="505" width="85" height="85" fill="#d9bbf9" />
+      <text x="1072.5" y="540" class="room-label"><tspan x="1072.5" dy="0">faculty</tspan><tspan x="1072.5" dy="13">restroom</tspan></text>
+
+
+      <rect x="1030" y="590" width="85" height="155" fill="#9bc6ff" />
+      <text x="1072.5" y="660" class="room-label"><tspan x="1072.5" dy="0">Dept of</tspan><tspan x="1072.5" dy="13">CSE(AIML)</tspan></text>
+    </g>
+
+
+    <g class="room">
+
+      <rect x="735" y="745" width="295" height="80" fill="#fbd394" />
+      <text x="882.5" y="785" class="room-label">Faculty Room / Area</text>
+
+
+      <rect x="580" y="745" width="155" height="80" fill="#a0f4a0" />
+      <text x="657.5" y="785" class="room-label">IV AIML classroom</text>
+
+
+      <rect x="450" y="745" width="130" height="80" fill="#ffb3cc" />
+      <text x="515" y="785" class="room-label-lg">III AIML</text>
+
+
+      <rect x="355" y="745" width="95" height="80" fill="#a0f4a0" />
+      <text x="402.5" y="785" class="room-label-lg">Empty</text>
+
+
+      <rect x="260" y="745" width="95" height="80" fill="#9bc6ff" />
+      <text x="307.5" y="775" class="room-label"><tspan x="307.5" dy="0">Faculty room</tspan><tspan x="307.5" dy="13">AIML</tspan></text>
+
+
+      <rect x="165" y="745" width="95" height="80" fill="#d9bbf9" />
+      <text x="212.5" y="785" class="room-label">II AIML</text>
+
+
+      <rect x="70" y="745" width="95" height="80" fill="#ffb3cc" />
+      <text x="117.5" y="775" class="room-label"><tspan x="117.5" dy="0">III AI&amp;DS</tspan><tspan x="117.5" dy="13">B class</tspan></text>
+    </g>
+
+
+    <g class="room">
+
+      <rect x="85" y="660" width="85" height="85" fill="#e0e0e0" />
+      <text x="127.5" y="702.5" class="room-label">Staircase</text>
+
+
+      <rect x="85" y="590" width="85" height="70" fill="#c6a1f9" />
+      <text x="127.5" y="625" class="room-label">Lift</text>
+
+
+      <rect x="85" y="515" width="85" height="75" fill="#ffb3cc" />
+      <text x="127.5" y="545" class="room-label"><tspan x="127.5" dy="0">BME HOD</tspan><tspan x="127.5" dy="13">room 215</tspan></text>
+
+
+      <rect x="85" y="440" width="85" height="75" fill="#f9e770" />
+      <text x="127.5" y="470" class="room-label"><tspan x="127.5" dy="0">Dept of BME</tspan><tspan x="127.5" dy="13">lab 216</tspan></text>
+
+
+      <rect x="85" y="365" width="85" height="75" fill="#f9e770" />
+      <text x="127.5" y="395" class="room-label"><tspan x="127.5" dy="0">Bio Chemistry</tspan><tspan x="127.5" dy="13">lab 217</tspan></text>
+
+
+      <rect x="85" y="290" width="85" height="75" fill="#9bc6ff" />
+      <text x="127.5" y="320" class="room-label"><tspan x="127.5" dy="0">Student</tspan><tspan x="127.5" dy="13">Restroom</tspan></text>
+
+
+      <rect x="85" y="95" width="85" height="195" fill="#ffb3cc" />
+      <text x="127.5" y="185" class="room-label-sm"><tspan x="127.5" dy="0">Diagnostic</tspan><tspan x="127.5" dy="12">therapeutic</tspan><tspan x="127.5" dy="12">lab 219</tspan></text>
+    </g>
+
+
+    <g class="room">
+
+      <rect x="170" y="165" width="95" height="80" fill="#fde4a7" />
+      <text x="217.5" y="205" class="room-label">Area / Room</text>
+
+      <rect x="265" y="165" width="75" height="80" fill="#e0e0e0" />
+      <text x="302.5" y="205" class="room-label">Staircase</text>
+
+
+      <rect x="680" y="165" width="230" height="110" fill="#ffb3cc" />
+      <text x="795" y="210" class="room-label-lg"><tspan x="795" dy="0">Faculty room</tspan><tspan x="795" dy="16" class="label-accent">AIML 204</tspan></text>
+
+      <rect x="910" y="165" width="120" height="110" fill="#e0e0e0" />
+      <text x="970" y="220" class="room-label">Staircase</text>
+
+
+      <rect x="170" y="535" width="115" height="90" fill="#2d6a4f" />
+      <text x="227.5" y="580" class="room-label room-label-white">M.E (CS) I</text>
+
+      <rect x="285" y="535" width="95" height="90" fill="#9bc6ff" />
+      <text x="332.5" y="570" class="room-label"><tspan x="332.5" dy="0">AI&amp;DS A III</tspan><tspan x="332.5" dy="13">classroom 212</tspan></text>
+
+      <rect x="285" y="625" width="95" height="120" fill="#f9e770" />
+      <text x="332.5" y="675" class="room-label"><tspan x="332.5" dy="0">women</tspan><tspan x="332.5" dy="13">empowerment</tspan><tspan x="332.5" dy="13">cell</tspan></text>
+
+      <rect x="170" y="625" width="115" height="120" fill="#d9bbf9" />
+      <text x="227.5" y="685" class="room-label">M.E (CS) II 213</text>
+    </g>
+
+
+    <g class="doors">
+      <rect x="202" y="159" width="16" height="4" class="door-rect" />
+      <rect x="357" y="159" width="16" height="4" class="door-rect" />
+      <rect x="587" y="159" width="16" height="4" class="door-rect" />
+      <rect x="857" y="159" width="16" height="4" class="door-rect" />
+      <rect x="1026" y="185" width="4" height="16" class="door-rect" />
+      <rect x="1026" y="260" width="4" height="16" class="door-rect" />
+      <rect x="1026" y="335" width="4" height="16" class="door-rect" />
+      <rect x="1026" y="410" width="4" height="16" class="door-rect" />
+      <rect x="1026" y="475" width="4" height="16" class="door-rect" />
+      <rect x="1026" y="540" width="4" height="16" class="door-rect" />
+      <rect x="1026" y="615" width="4" height="16" class="door-rect" />
+      <rect x="1026" y="695" width="4" height="16" class="door-rect" />
+      <rect x="947" y="741" width="16" height="4" class="door-rect" />
+      <rect x="807" y="741" width="16" height="4" class="door-rect" />
+      <rect x="637" y="741" width="16" height="4" class="door-rect" />
+      <rect x="477" y="741" width="16" height="4" class="door-rect" />
+      <rect x="257" y="741" width="16" height="4" class="door-rect" />
+      <rect x="166" y="695" width="4" height="16" class="door-rect" />
+      <rect x="166" y="620" width="4" height="16" class="door-rect" />
+      <rect x="166" y="550" width="4" height="16" class="door-rect" />
+      <rect x="166" y="475" width="4" height="16" class="door-rect" />
+      <rect x="166" y="400" width="4" height="16" class="door-rect" />
+      <rect x="166" y="325" width="4" height="16" class="door-rect" />
+      <rect x="166" y="255" width="4" height="16" class="door-rect" />
+      <rect x="166" y="185" width="4" height="16" class="door-rect" />
+    </g>
+  </g>
+
+<g id="dynamic-paths-F2"></g>
+<g id="dynamic-nodes-F2"></g>
+<path id="highlighted-path-F2" class="route-highlight" d="" />
+
+                    </g>
+</svg>

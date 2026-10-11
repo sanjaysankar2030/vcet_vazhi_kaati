@@ -1,0 +1,90 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow: auto;
+}
+
+#ui-panel {
+    background: #ffffff; padding: 15px 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 10;
+    display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap; position: relative;
+    flex-shrink: 0;
+}
+.form-group { display: flex; align-items: center; gap: 10px; }
+select { padding: 8px 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 1rem; outline: none; }
+button {
+    padding: 10px 15px; background: #0066cc; color: white; border: none;
+    border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.3s;
+}
+button:hover { background: #0052a3; }
+#live-btn { background: #28a745; }
+#live-btn:hover { background: #218838; }
+#status { font-weight: bold; color: #333; margin-left: 10px; width: 100%; text-align: center; }
+
+/* Vertical Floor Picker */
+#floor-picker {
+    position: absolute; right: 20px; bottom: 80px; display: flex; flex-direction: column;
+    background: rgba(255, 255, 255, 0.95); border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 100; overflow: hidden; border: 1px solid #ccc;
+}
+.floor-btn {
+    background: transparent; color: #555; border: none; padding: 12px 18px; font-size: 1.1rem;
+    font-weight: bold; cursor: pointer; border-bottom: 1px solid #ddd; border-radius: 0;
+}
+.floor-btn:last-child { border-bottom: none; }
+.floor-btn.active { background: #0066cc; color: #ffffff; }
+.floor-btn:hover:not(.active) { background: #f0f0f0; }
+
+#map-wrapper {
+    position: relative;
+    flex: 1 1 auto;
+    width: 100%;
+    height: 680px;
+    min-height: 680px;
+    display: block;
+}
+#map-container {
+    display: block;
+    overflow: hidden;
+    background-color: #e0e0e0;
+    width: 100%;
+    height: 100%;
+    min-height: 680px;
+    touch-action: none;
+}
+svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    cursor: grab;
+    touch-action: none;
+}
+svg:active { cursor: grabbing; }
+
+/* Corridor Gap Styling */
+.corridor-base { fill: none; stroke: #000000; stroke-width: 14; stroke-linejoin: round; stroke-linecap: round; }
+.corridor-inner { fill: none; stroke: #ffffff; stroke-width: 10; stroke-linejoin: round; stroke-linecap: round; }
+
+/*.text-main { font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; fill: #000033; text-anchor: middle; alignment-baseline: middle; }
+.text-sm { font-family: Arial, sans-serif; font-size: 13px; font-weight: bold; fill: #000033; text-anchor: middle; alignment-baseline: middle; }
+.text-xs { font-family: Arial, sans-serif; font-size: 11px; font-weight: bold; fill: #000033; text-anchor: middle; alignment-baseline: middle; }*/
+.direction-box { fill: #ffffff; stroke: #000000; stroke-width: 2; rx: 8; }
+.direction-text { font-family: Arial, sans-serif; font-size: 22px; font-weight: bold; fill: #000000; text-anchor: middle; alignment-baseline: middle; }
+
+.door-rect { fill: #ffffff; stroke: #000000; stroke-width: 2; rx: 2; }
+.path-line { fill: none; stroke: #6699ff; stroke-width: 2; stroke-dasharray: 8, 5; opacity: 0.6; }
+.path-node { fill: #ffffff; stroke: #ff9999; stroke-width: 2; r: 4; opacity: 0.6; }
+.door-node { fill: #ffcc00; stroke: #cc0000; stroke-width: 2; r: 5; opacity: 0.8; }
+
+.route-highlight { fill: none; stroke: #0055ff; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; opacity: 0.85; }
+#animated-dot { fill: #0022aa; stroke: #ffffff; stroke-width: 2; filter: drop-shadow(0px 0px 5px rgba(0,102,255,0.8)); transition: all 0.1s linear; }
+
+#live-dot { fill: #28a745; stroke: #ffffff; stroke-width: 2; filter: drop-shadow(0px 0px 6px rgba(40,167,69,0.9)); transition: cx 0.5s ease-out, cy 0.5s ease-out; }
+@keyframes pulse { 0% { r: 8; opacity: 1; } 100% { r: 25; opacity: 0; } }
+#pulse-ring { fill: none; stroke: #28a745; stroke-width: 2; animation: pulse 1.5s infinite ease-out; transition: cx 0.5s ease-out, cy 0.5s ease-out; }
