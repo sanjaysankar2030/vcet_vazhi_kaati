@@ -1,0 +1,17 @@
+    const server = Bun.serve({
+      port: 3000,
+      fetch(req) {
+        const url = new URL(req.url);
+        let pathname = url.pathname;
+
+        // Default to the main HTML entry file
+        if (pathname === "/" || pathname === "") {
+          pathname = "/VCET_Navigation_F1_F2_Updated.html";
+        }
+
+          const file = Bun.file(`E:/Projects/frontend${pathname}`);
+        return new Response(file);
+      },
+    });
+
+    console.log(`Server running at: http://localhost:${server.port}`);

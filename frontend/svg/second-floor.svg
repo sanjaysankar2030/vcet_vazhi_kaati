@@ -29,15 +29,6 @@
   <g id="floor-F2">
 
 <defs>
-  <style>
-    #floor-F2 .corridor-base { fill: none; stroke: #000000; stroke-width: 16; stroke-linejoin: round; stroke-linecap: round; }
-    #floor-F2 .corridor-inner { fill: none; stroke: #ffffff; stroke-width: 12; stroke-linejoin: round; stroke-linecap: round; }
-    #floor-F2 .room-label { font-family: Arial, sans-serif; font-size: 11px; font-weight: normal; fill: #000033; text-anchor: middle; alignment-baseline: middle; }
-    #floor-F2 .room-label-sm { font-family: Arial, sans-serif; font-size: 9px; font-weight: normal; fill: #000033; text-anchor: middle; alignment-baseline: middle; }
-    #floor-F2 .room-label-lg { font-family: Arial, sans-serif; font-size: 13px; font-weight: normal; fill: #000033; text-anchor: middle; alignment-baseline: middle; }
-    #floor-F2 .door-rect { fill: #ffffff; stroke: #000000; stroke-width: 2; rx: 2; }
-
-  </style>
 </defs>
 
 <g id="floor-F2-detailed-map">

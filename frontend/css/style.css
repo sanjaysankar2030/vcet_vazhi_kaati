@@ -1,3 +1,78 @@
+/* ==========================================================================
+   VCET VAZHI KAATI - MASTER STYLESHEET
+   Controls both UI panels and SVG Map graphics across all floors.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS DESIGN TOKENS / THEME VARIABLES (FOR SVG MAP & UI)
+   Change these variables to quickly restyle map elements across all floors.
+   -------------------------------------------------------------------------- */
+:root {
+    /* Corridors */
+    --corridor-outer-color: #000000;
+    --corridor-outer-width: 14px;
+    --corridor-inner-color: #ffffff;
+    --corridor-inner-width: 10px;
+
+    /* Graph Network: Walkway Edges & Waypoint Nodes */
+    --edge-line-color: #6699ff;
+    --edge-line-width: 2px;
+    --edge-line-dash: 8, 5;
+    --edge-line-opacity: 0.6;
+
+    --node-path-fill: #ffffff;
+    --node-path-stroke: #ff9999;
+    --node-path-stroke-width: 2px;
+    --node-path-radius: 4px;
+    --node-path-opacity: 0.6;
+
+    --node-door-fill: #ffcc00;
+    --node-door-stroke: #cc0000;
+    --node-door-stroke-width: 2px;
+    --node-door-radius: 5px;
+    --node-door-opacity: 0.8;
+
+    /* Doors */
+    --door-fill: #ffffff;
+    --door-stroke: #000000;
+    --door-stroke-width: 2px;
+
+    /* Active Navigation Route & Animation */
+    --route-color: #0055ff;
+    --route-width: 6px;
+    --route-opacity: 0.85;
+
+    --animated-dot-fill: #0022aa;
+    --animated-dot-stroke: #ffffff;
+    --animated-dot-stroke-width: 2px;
+    --animated-dot-shadow: rgba(0, 102, 255, 0.8);
+
+    /* GPS Live Tracking Dot */
+    --live-dot-color: #28a745;
+    --live-dot-stroke: #ffffff;
+
+    /* Room Borders */
+    --room-border-stroke: #000000;
+    --room-border-width: 2.5px;
+
+    /* Typography / Map Labels */
+    --map-font-family: Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --map-text-color: #000033;
+    --map-text-accent: #3a0ca3;
+    --map-text-muted: #666666;
+    --room-label-weight: normal;           /* Change to 'bold' if bold room labels are desired */
+    --room-label-size: 11px;
+
+    /* Direction Badges */
+    --direction-box-fill: #ffffff;
+    --direction-box-stroke: #000000;
+    --direction-box-stroke-width: 2px;
+    --direction-text-color: #000000;
+}
+
+/* --------------------------------------------------------------------------
+   2. GLOBAL BODY & APP LAYOUT
+   -------------------------------------------------------------------------- */
 body {
     margin: 0;
     padding: 0;
@@ -9,36 +84,114 @@ body {
     overflow: auto;
 }
 
+/* --------------------------------------------------------------------------
+   3. TOP NAVIGATION CONTROLS & UI PANEL
+   -------------------------------------------------------------------------- */
 #ui-panel {
-    background: #ffffff; padding: 15px 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 10;
-    display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap; position: relative;
+    background: #ffffff;
+    padding: 15px 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
     flex-shrink: 0;
 }
-.form-group { display: flex; align-items: center; gap: 10px; }
-select { padding: 8px 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 1rem; outline: none; }
+
+.form-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    outline: none;
+}
+
 button {
-    padding: 10px 15px; background: #0066cc; color: white; border: none;
-    border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.3s;
+    padding: 10px 15px;
+    background: #0066cc;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
 }
-button:hover { background: #0052a3; }
-#live-btn { background: #28a745; }
-#live-btn:hover { background: #218838; }
-#status { font-weight: bold; color: #333; margin-left: 10px; width: 100%; text-align: center; }
 
-/* Vertical Floor Picker */
+button:hover {
+    background: #0052a3;
+}
+
+#live-btn {
+    background: #28a745;
+}
+
+#live-btn:hover {
+    background: #218838;
+}
+
+#status {
+    font-weight: bold;
+    color: #333;
+    margin-left: 10px;
+    width: 100%;
+    text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   4. VERTICAL FLOOR PICKER (GROUND - 5TH FLOOR)
+   -------------------------------------------------------------------------- */
 #floor-picker {
-    position: absolute; right: 20px; bottom: 80px; display: flex; flex-direction: column;
-    background: rgba(255, 255, 255, 0.95); border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    z-index: 100; overflow: hidden; border: 1px solid #ccc;
+    position: absolute;
+    right: 20px;
+    bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    overflow: hidden;
+    border: 1px solid #ccc;
 }
-.floor-btn {
-    background: transparent; color: #555; border: none; padding: 12px 18px; font-size: 1.1rem;
-    font-weight: bold; cursor: pointer; border-bottom: 1px solid #ddd; border-radius: 0;
-}
-.floor-btn:last-child { border-bottom: none; }
-.floor-btn.active { background: #0066cc; color: #ffffff; }
-.floor-btn:hover:not(.active) { background: #f0f0f0; }
 
+.floor-btn {
+    background: transparent;
+    color: #555;
+    border: none;
+    padding: 12px 18px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0;
+}
+
+.floor-btn:last-child {
+    border-bottom: none;
+}
+
+.floor-btn.active {
+    background: #0066cc;
+    color: #ffffff;
+}
+
+.floor-btn:hover:not(.active) {
+    background: #f0f0f0;
+}
+
+/* --------------------------------------------------------------------------
+   5. MAP WRAPPER & SVG VIEWPORT
+   -------------------------------------------------------------------------- */
 #map-wrapper {
     position: relative;
     flex: 1 1 auto;
@@ -47,6 +200,7 @@ button:hover { background: #0052a3; }
     min-height: 680px;
     display: block;
 }
+
 #map-container {
     display: block;
     overflow: hidden;
@@ -56,7 +210,8 @@ button:hover { background: #0052a3; }
     min-height: 680px;
     touch-action: none;
 }
-svg {
+
+svg#campus-map {
     display: block;
     width: 100%;
     height: 100%;
@@ -64,27 +219,265 @@ svg {
     max-height: none;
     cursor: grab;
     touch-action: none;
+    background-color: #e0e0e0;
 }
-svg:active { cursor: grabbing; }
 
-/* Corridor Gap Styling */
-.corridor-base { fill: none; stroke: #000000; stroke-width: 14; stroke-linejoin: round; stroke-linecap: round; }
-.corridor-inner { fill: none; stroke: #ffffff; stroke-width: 10; stroke-linejoin: round; stroke-linecap: round; }
+svg#campus-map:active {
+    cursor: grabbing;
+}
 
-.text-main { font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; fill: #000033; text-anchor: middle; alignment-baseline: middle; }
-.text-sm { font-family: Arial, sans-serif; font-size: 13px; font-weight: bold; fill: #000033; text-anchor: middle; alignment-baseline: middle; }
-.text-xs { font-family: Arial, sans-serif; font-size: 11px; font-weight: bold; fill: #000033; text-anchor: middle; alignment-baseline: middle; }
-.direction-box { fill: #ffffff; stroke: #000000; stroke-width: 2; rx: 8; }
-.direction-text { font-family: Arial, sans-serif; font-size: 22px; font-weight: bold; fill: #000000; text-anchor: middle; alignment-baseline: middle; }
+/* --------------------------------------------------------------------------
+   6. SVG MAP GRAPHICS: CORRIDORS & WALKWAYS
+   -------------------------------------------------------------------------- */
+.corridor-base {
+    fill: none;
+    stroke: var(--corridor-outer-color);
+    stroke-width: var(--corridor-outer-width);
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
 
-.door-rect { fill: #ffffff; stroke: #000000; stroke-width: 2; rx: 2; }
-.path-line { fill: none; stroke: #6699ff; stroke-width: 2; stroke-dasharray: 8, 5; opacity: 0.6; }
-.path-node { fill: #ffffff; stroke: #ff9999; stroke-width: 2; r: 4; opacity: 0.6; }
-.door-node { fill: #ffcc00; stroke: #cc0000; stroke-width: 2; r: 5; opacity: 0.8; }
+.corridor-inner {
+    fill: none;
+    stroke: var(--corridor-inner-color);
+    stroke-width: var(--corridor-inner-width);
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
 
-.route-highlight { fill: none; stroke: #0055ff; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; opacity: 0.85; }
-#animated-dot { fill: #0022aa; stroke: #ffffff; stroke-width: 2; filter: drop-shadow(0px 0px 5px rgba(0,102,255,0.8)); transition: all 0.1s linear; }
+/* --------------------------------------------------------------------------
+   7. SVG MAP GRAPHICS: ROOMS, STRUCTURES & DOORS
+   -------------------------------------------------------------------------- */
+/* Container group for rooms must NOT have stroke, otherwise SVG text inside
+   inherits the stroke and gets distorted / bold with a black outline */
+g.room,
+.room {
+    stroke: none;
+    stroke-width: 0;
+}
 
-#live-dot { fill: #28a745; stroke: #ffffff; stroke-width: 2; filter: drop-shadow(0px 0px 6px rgba(40,167,69,0.9)); transition: cx 0.5s ease-out, cy 0.5s ease-out; }
-@keyframes pulse { 0% { r: 8; opacity: 1; } 100% { r: 25; opacity: 0; } }
-#pulse-ring { fill: none; stroke: #28a745; stroke-width: 2; animation: pulse 1.5s infinite ease-out; transition: cx 0.5s ease-out, cy 0.5s ease-out; }
+/* Geometric shapes representing room walls (rectangles, polygons, paths) */
+.room rect,
+.room polygon,
+.room path {
+    stroke: var(--room-border-stroke);
+    stroke-width: var(--room-border-width);
+}
+
+/* Doors placed along room walls */
+.door-rect {
+    fill: var(--door-fill);
+    stroke: var(--door-stroke);
+    stroke-width: var(--door-stroke-width);
+    rx: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   8. SVG MAP GRAPHICS: GRAPH NETWORK (NODES & EDGES)
+   Generated dynamically by script.js inside #dynamic-paths-* and #dynamic-nodes-*
+   -------------------------------------------------------------------------- */
+/* Walkway connection edges (dashed lines) */
+.path-line {
+    fill: none;
+    stroke: var(--edge-line-color);
+    stroke-width: var(--edge-line-width);
+    stroke-dasharray: var(--edge-line-dash);
+    opacity: var(--edge-line-opacity);
+}
+
+/* Corridor junction waypoint nodes (circles) */
+.path-node {
+    fill: var(--node-path-fill);
+    stroke: var(--node-path-stroke);
+    stroke-width: var(--node-path-stroke-width);
+    r: var(--node-path-radius);
+    opacity: var(--node-path-opacity);
+}
+
+/* Door entrance waypoint nodes (circles) */
+.door-node {
+    fill: var(--node-door-fill);
+    stroke: var(--node-door-stroke);
+    stroke-width: var(--node-door-stroke-width);
+    r: var(--node-door-radius);
+    opacity: var(--node-door-opacity);
+}
+
+/* --------------------------------------------------------------------------
+   9. SVG MAP GRAPHICS: ACTIVE NAVIGATION ROUTE & ANIMATED DOT
+   -------------------------------------------------------------------------- */
+/* The calculated shortest path highlighted line */
+.route-highlight {
+    fill: none;
+    stroke: var(--route-color);
+    stroke-width: var(--route-width);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: var(--route-opacity);
+}
+
+/* Animated moving dot tracking along the path */
+#animated-dot {
+    fill: var(--animated-dot-fill);
+    stroke: var(--animated-dot-stroke);
+    stroke-width: var(--animated-dot-stroke-width);
+    filter: drop-shadow(0px 0px 5px var(--animated-dot-shadow));
+    transition: all 0.1s linear;
+}
+
+/* --------------------------------------------------------------------------
+   10. SVG MAP GRAPHICS: LIVE GPS TRACKING BEACON
+   -------------------------------------------------------------------------- */
+#live-dot {
+    fill: var(--live-dot-color);
+    stroke: var(--live-dot-stroke);
+    stroke-width: 2px;
+    filter: drop-shadow(0px 0px 6px rgba(40, 167, 69, 0.9));
+    transition: cx 0.5s ease-out, cy 0.5s ease-out;
+}
+
+@keyframes pulse {
+    0% {
+        r: 8px;
+        opacity: 1;
+    }
+    100% {
+        r: 25px;
+        opacity: 0;
+    }
+}
+
+#pulse-ring {
+    fill: none;
+    stroke: var(--live-dot-color);
+    stroke-width: 2px;
+    animation: pulse 1.5s infinite ease-out;
+    transition: cx 0.5s ease-out, cy 0.5s ease-out;
+}
+
+/* --------------------------------------------------------------------------
+   11. SVG MAP GRAPHICS: TEXT LABELS & TYPOGRAPHY
+   Crucial: All text and tspan elements must have stroke: none !important so they
+   never inherit stroke outlines from parent SVG groups.
+   -------------------------------------------------------------------------- */
+text,
+tspan,
+.room-label,
+.room-label-sm,
+.room-label-lg,
+.room-label-white,
+.label-accent,
+.text-main,
+.text-sm,
+.text-xs,
+.text-courtyard,
+.direction-text {
+    stroke: none !important;
+    stroke-width: 0 !important;
+    paint-order: fill;
+    user-select: none;
+    pointer-events: none;
+}
+
+.text-main {
+    font-family: var(--map-font-family);
+    font-size: 18px;
+    font-weight: bold;
+    fill: var(--map-text-color);
+    text-anchor: middle;
+    alignment-baseline: middle;
+}
+
+.text-sm {
+    font-family: var(--map-font-family);
+    font-size: 13px;
+    font-weight: bold;
+    fill: var(--map-text-color);
+    text-anchor: middle;
+    alignment-baseline: middle;
+}
+
+.text-xs {
+    font-family: var(--map-font-family);
+    font-size: 11px;
+    font-weight: bold;
+    fill: var(--map-text-color);
+    text-anchor: middle;
+    alignment-baseline: middle;
+}
+
+/* Specific room label classes used in floor SVGs */
+.room-label {
+    font-family: var(--map-font-family);
+    font-size: var(--room-label-size, 11px);
+    font-weight: var(--room-label-weight, normal);
+    fill: var(--map-text-color);
+    text-anchor: middle;
+    alignment-baseline: middle;
+}
+
+.room-label-sm {
+    font-family: var(--map-font-family);
+    font-size: 9px;
+    font-weight: var(--room-label-weight, normal);
+    fill: var(--map-text-color);
+    text-anchor: middle;
+    alignment-baseline: middle;
+}
+
+.room-label-lg {
+    font-family: var(--map-font-family);
+    font-size: 13px;
+    font-weight: var(--room-label-weight, normal);
+    fill: var(--map-text-color);
+    text-anchor: middle;
+    alignment-baseline: middle;
+}
+
+.room-label-white {
+    fill: #ffffff;
+}
+
+.label-accent {
+    fill: var(--map-text-accent);
+}
+
+.text-courtyard {
+    font-family: var(--map-font-family);
+    font-size: 15px;
+    font-weight: bold;
+    fill: var(--map-text-muted);
+    text-anchor: middle;
+    alignment-baseline: middle;
+}
+
+/* --------------------------------------------------------------------------
+   12. SVG MAP GRAPHICS: DIRECTION BADGES (NORTH, SOUTH, EAST, WEST)
+   -------------------------------------------------------------------------- */
+.direction-box {
+    fill: var(--direction-box-fill);
+    stroke: var(--direction-box-stroke);
+    stroke-width: var(--direction-box-stroke-width);
+    rx: 8px;
+}
+
+.direction-text {
+    font-family: var(--map-font-family);
+    font-size: 22px;
+    font-weight: bold;
+    fill: var(--direction-text-color);
+    text-anchor: middle;
+    alignment-baseline: middle;
+}
+
+/* --------------------------------------------------------------------------
+   13. PER-FLOOR SELECTOR HOOKS (OPTIONAL SCOPING)
+   Use these to style elements specifically on Ground, F1, F2, etc.
+   Example: #floor-G .corridor-inner { stroke: #ffffea; }
+   -------------------------------------------------------------------------- */
+#floor-G { /* Ground floor specific overrides */ }
+#floor-F1 { /* First floor specific overrides */ }
+#floor-F2 { /* Second floor specific overrides */ }
+#floor-F3 { /* Third floor specific overrides */ }
+#floor-F4 { /* Fourth floor specific overrides */ }
+#floor-F5 { /* Fifth floor specific overrides */ }

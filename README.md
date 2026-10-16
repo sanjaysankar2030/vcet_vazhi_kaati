@@ -16,3 +16,4 @@
 ```
 > cd frontend
 ```
+- For a comprehensive styling manual (editing colors, nodes, edges, corridors, rooms, and animations), refer to [SVG CSS Styling Guide](SVG_CSS_STYLING_GUIDE.md).

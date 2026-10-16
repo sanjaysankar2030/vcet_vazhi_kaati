@@ -30,6 +30,8 @@ async function loadFloorMaps() {
     if (!floorGroup) throw new Error(`SVG does not contain #floor-${floorId}`);
 
     const imported = document.importNode(floorGroup, true);
+    // Strip any internal or legacy <style> tags so frontend/css/style.css is the single source of truth
+    imported.querySelectorAll('style').forEach((s) => s.remove());
     if (floorId !== 'G') imported.setAttribute('display', 'none');
     fragment.appendChild(imported);
   }
