@@ -19,67 +19,67 @@
       <text x="600" y="455" font-family="Arial" font-size="15" font-weight="bold" fill="#666" text-anchor="middle">Open Courtyard Below</text>
 
       <g class="room">
-        <rect x="134" y="99" width="67" height="62" fill="#fbd394" />
+        <rect x="134" y="103" width="67" height="54" fill="#fbd394" />
         <text x="167.5" y="125" class="room-label"><tspan x="167.5" dy="0">UPS</tspan><tspan x="167.5" dy="13">Room</tspan></text>
-        <rect x="209" y="99" width="157" height="62" fill="#9bc6ff" />
+        <rect x="209" y="103" width="157" height="54" fill="#9bc6ff" />
         <text x="287.5" y="130" class="room-label-lg">119</text>
-        <rect x="374" y="99" width="202" height="62" fill="#9bc6ff" />
+        <rect x="374" y="103" width="202" height="54" fill="#9bc6ff" />
         <text x="475" y="123" class="room-label"><tspan x="475" dy="0">Distributed System</tspan><tspan x="475" dy="13">Lab 120</tspan></text>
-        <rect x="584" y="99" width="272" height="62" fill="#d9bbf9" />
+        <rect x="584" y="103" width="272" height="54" fill="#d9bbf9" />
         <text x="720" y="123" class="room-label"><tspan x="720" dy="0">Under construction</tspan><tspan x="720" dy="13">121</tspan></text>
-        <rect x="864" y="99" width="162" height="62" fill="#fbd394" />
+        <rect x="864" y="103" width="162" height="54" fill="#fbd394" />
         <text x="945" y="125" class="room-label"><tspan x="945" dy="0">Student</tspan><tspan x="945" dy="13">Restroom</tspan></text>
       </g>
 
       <g class="room">
         <polygon points="1034,169 1076,169 1076,231 1034,231" fill="#a0f4a0" />
-        <rect x="1034" y="169" width="77" height="62" fill="#a0f4a0" />
+        <rect x="1038" y="169" width="69" height="62" fill="#a0f4a0" />
         <text x="1072.5" y="193" class="room-label"><tspan x="1072.5" dy="0">II IT A</tspan><tspan x="1072.5" dy="13">classroom 101</tspan></text>
-        <rect x="1034" y="239" width="77" height="62" fill="#9bc6ff" />
+        <rect x="1038" y="239" width="69" height="62" fill="#9bc6ff" />
         <text x="1072.5" y="263" class="room-label"><tspan x="1072.5" dy="0">III IT A</tspan><tspan x="1072.5" dy="13">classroom 102</tspan></text>
-        <rect x="1034" y="309" width="77" height="62" fill="#9bc6ff" />
+        <rect x="1038" y="309" width="69" height="62" fill="#9bc6ff" />
         <text x="1072.5" y="333" class="room-label"><tspan x="1072.5" dy="0">IV IT A</tspan><tspan x="1072.5" dy="13">classroom 103</tspan></text>
-        <rect x="1034" y="379" width="77" height="62" fill="#f9e770" />
+        <rect x="1038" y="379" width="69" height="62" fill="#f9e770" />
         <text x="1072.5" y="403" class="room-label"><tspan x="1072.5" dy="0">empty</tspan><tspan x="1072.5" dy="13">room 105</tspan></text>
-        <rect x="1034" y="449" width="77" height="52" fill="#9bc6ff" />
+        <rect x="1038" y="449" width="69" height="52" fill="#9bc6ff" />
         <text x="1072.5" y="468" class="room-label"><tspan x="1072.5" dy="0">Student</tspan><tspan x="1072.5" dy="13">Restroom</tspan></text>
-        <rect x="1034" y="509" width="77" height="62" fill="#e0e0e0" />
+        <rect x="1038" y="509" width="69" height="62" fill="#e0e0e0" />
         <text x="1072.5" y="540" class="room-label">Staircase</text>
-        <rect x="1034" y="579" width="77" height="77" fill="#d9bbf9" />
+        <rect x="1038" y="579" width="69" height="77" fill="#d9bbf9" />
         <text x="1072.5" y="610" class="room-label"><tspan x="1072.5" dy="0">EEE</tspan><tspan x="1072.5" dy="12">computer</tspan><tspan x="1072.5" dy="12">lab 106</tspan></text>
-        <rect x="1034" y="664" width="77" height="77" fill="#9bc6ff" />
+        <rect x="1038" y="664" width="69" height="77" fill="#9bc6ff" />
         <text x="1072.5" y="695" class="room-label"><tspan x="1072.5" dy="0">Staff</tspan><tspan x="1072.5" dy="13">Restroom</tspan></text>
       </g>
 
       <g class="room">
-        <rect x="739" y="749" width="287" height="72" fill="#fbd394" />
+        <rect x="739" y="753" width="287" height="64" fill="#fbd394" />
         <text x="882.5" y="780" class="room-label"><tspan x="882.5" dy="0">Faculty</tspan><tspan x="882.5" dy="14">room 107</tspan></text>
-        <rect x="529" y="749" width="202" height="72" fill="#a0f4a0" />
+        <rect x="529" y="753" width="202" height="64" fill="#a0f4a0" />
         <text x="630" y="785" class="room-label">Dept Library IT 108</text>
-        <rect x="369" y="749" width="152" height="72" fill="#ffb3cc" />
+        <rect x="369" y="753" width="152" height="64" fill="#ffb3cc" />
         <text x="445" y="785" class="room-label-lg">empty</text>
-        <rect x="174" y="749" width="187" height="72" fill="#d9bbf9" />
+        <rect x="174" y="753" width="187" height="64" fill="#d9bbf9" />
         <text x="267.5" y="785" class="room-label-lg">empty</text>
-        <rect x="74" y="749" width="92" height="72" fill="#ffb3cc" />
+        <rect x="74" y="753" width="92" height="64" fill="#ffb3cc" />
         <text x="120" y="775" class="room-label"><tspan x="120" dy="0">New</tspan><tspan x="120" dy="13">Building</tspan></text>
       </g>
 
       <g class="room">
-        <rect x="89" y="664" width="77" height="77" fill="#e0e0e0" />
+        <rect x="93" y="664" width="69" height="77" fill="#e0e0e0" />
         <text x="127.5" y="702.5" class="room-label">Staircase</text>
-        <rect x="89" y="594" width="77" height="62" fill="#c6a1f9" />
+        <rect x="93" y="594" width="69" height="62" fill="#c6a1f9" />
         <text x="127.5" y="625" class="room-label">Lift</text>
-        <rect x="89" y="519" width="77" height="67" fill="#9bc6ff" />
+        <rect x="93" y="519" width="69" height="67" fill="#9bc6ff" />
         <text x="127.5" y="545" class="room-label"><tspan x="127.5" dy="0">HOD room</tspan><tspan x="127.5" dy="13">EEE 112</tspan></text>
-        <rect x="89" y="444" width="77" height="67" fill="#f9e770" />
+        <rect x="93" y="444" width="69" height="67" fill="#f9e770" />
         <text x="127.5" y="470" class="room-label"><tspan x="127.5" dy="0">EEE II</tspan><tspan x="127.5" dy="13">classroom 113</tspan></text>
-        <rect x="89" y="369" width="77" height="67" fill="#f9e770" />
+        <rect x="93" y="369" width="69" height="67" fill="#f9e770" />
         <text x="127.5" y="395" class="room-label" font-weight="bold" fill="#cc0000"><tspan x="127.5" dy="0">III EEE</tspan><tspan x="127.5" dy="13">classroom 114</tspan></text>
-        <rect x="89" y="294" width="77" height="67" fill="#f9e770" />
+        <rect x="93" y="294" width="69" height="67" fill="#f9e770" />
         <text x="127.5" y="320" class="room-label"><tspan x="127.5" dy="0">IV EEE</tspan><tspan x="127.5" dy="13">classroom 115</tspan></text>
-        <rect x="89" y="229" width="77" height="57" fill="#9bc6ff" />
+        <rect x="93" y="229" width="69" height="57" fill="#9bc6ff" />
         <text x="127.5" y="250" class="room-label"><tspan x="127.5" dy="0">Student</tspan><tspan x="127.5" dy="13">Restroom</tspan></text>
-        <rect x="89" y="99" width="77" height="122" fill="#ffb3cc" />
+        <rect x="93" y="99" width="69" height="122" fill="#ffb3cc" />
         <text x="127.5" y="150" class="room-label-sm"><tspan x="127.5" dy="0">Signal Processing</tspan><tspan x="127.5" dy="11">&amp; VLSI Lab 116</tspan></text>
       </g>
 
