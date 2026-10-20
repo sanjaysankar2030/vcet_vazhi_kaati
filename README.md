@@ -20,10 +20,7 @@
 ## To run the project 
 ```
 > node server.js
-
-// To run it with make 
-
+(or)
 > make node_run 
-
 ```
 - For a comprehensive styling manual (editing colors, nodes, edges, corridors, rooms, and animations), refer to [SVG CSS Styling Guide](SVG_CSS_STYLING_GUIDE.md).

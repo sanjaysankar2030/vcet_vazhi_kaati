@@ -1,3 +1,17 @@
+            // --- Camera Follow Helper ---
+            // Centers the viewport on the given SVG coordinates (x, y) using the current
+            // panZoom realZoom. Recomputes getSizes() on each call so it stays correct
+            // after resize/orientation changes.
+            function centerCameraOn(x, y) {
+                if (!window.panZoom) return;
+                const sizes = window.panZoom.getSizes();
+                const realZoom = sizes.realZoom;
+                window.panZoom.pan({
+                    x: sizes.width / 2 - x * realZoom,
+                    y: sizes.height / 2 - y * realZoom,
+                });
+            }
+
             // --- Auto Floor Switching Logic ---
             let currentFloor = "G";
             function switchFloor(floorId) {
@@ -565,121 +579,6 @@
                 initializeMapInteractions();
             }
 
-            const TopLeftGPS = { lat: 11.275, lon: 77.608 };
-            const BotRightGPS = { lat: 11.274, lon: 77.609 };
-            for (let key in nodes) {
-                if (!nodes[key].lat) {
-                    nodes[key].lat =
-                        TopLeftGPS.lat -
-                        ((nodes[key].y - 80) / 740) *
-                            (TopLeftGPS.lat - BotRightGPS.lat);
-                    nodes[key].lon =
-                        TopLeftGPS.lon +
-                        ((nodes[key].x - 80) / 1040) *
-                            (BotRightGPS.lon - TopLeftGPS.lon);
-                }
-            }
-            function getDistance(lat1, lon1, lat2, lon2) {
-                const R = 6371e3;
-                const p1 = (lat1 * Math.PI) / 180;
-                const p2 = (lat2 * Math.PI) / 180;
-                const dp = ((lat2 - lat1) * Math.PI) / 180;
-                const dl = ((lon2 - lon1) * Math.PI) / 180;
-                const a =
-                    Math.sin(dp / 2) * Math.sin(dp / 2) +
-                    Math.cos(p1) *
-                        Math.cos(p2) *
-                        Math.sin(dl / 2) *
-                        Math.sin(dl / 2);
-                return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            }
-
-            let liveWatchId = null;
-            let activeSnappedNode = null;
-            let candidateNode = null;
-            let candidateCount = 0;
-            const liveBtn = document.getElementById("live-btn");
-            const liveUserGroup = document.getElementById("live-user-group");
-            const liveDot = document.getElementById("live-dot");
-            const pulseRing = document.getElementById("pulse-ring");
-
-            liveBtn.addEventListener("click", () => {
-                if (liveWatchId) {
-                    navigator.geolocation.clearWatch(liveWatchId);
-                    liveWatchId = null;
-                    liveUserGroup.setAttribute("display", "none");
-                    liveBtn.innerText = "📍 Start Live Tracking";
-                    liveBtn.style.backgroundColor = "#28a745";
-                    document.getElementById("status").innerText =
-                        "Live tracking stopped.";
-                } else {
-                    if ("geolocation" in navigator) {
-                        liveBtn.innerText = "Tracking...";
-                        liveBtn.style.backgroundColor = "#dc3545";
-                        liveUserGroup.setAttribute("display", "block");
-                        document.getElementById("status").innerText =
-                            "Searching for nearest node...";
-                        liveWatchId = navigator.geolocation.watchPosition(
-                            (position) => {
-                                const lat = position.coords.latitude;
-                                const lon = position.coords.longitude;
-                                let closestNode = null;
-                                let minDist = Infinity;
-                                for (let key in nodes) {
-                                    if (
-                                        nodes[key].floor === currentFloor &&
-                                        nodes[key].lat
-                                    ) {
-                                        let dist = getDistance(
-                                            lat,
-                                            lon,
-                                            nodes[key].lat,
-                                            nodes[key].lon,
-                                        );
-                                        if (dist < minDist) {
-                                            minDist = dist;
-                                            closestNode = key;
-                                        }
-                                    }
-                                }
-                                if (closestNode === candidateNode) {
-                                    candidateCount++;
-                                } else {
-                                    candidateNode = closestNode;
-                                    candidateCount = 1;
-                                }
-                                if (
-                                    candidateCount >= 3 ||
-                                    activeSnappedNode === null
-                                ) {
-                                    if (activeSnappedNode !== closestNode) {
-                                        activeSnappedNode = closestNode;
-                                        const pt = nodes[activeSnappedNode];
-                                        liveDot.setAttribute("cx", pt.x);
-                                        liveDot.setAttribute("cy", pt.y);
-                                        pulseRing.setAttribute("cx", pt.x);
-                                        pulseRing.setAttribute("cy", pt.y);
-                                        document.getElementById(
-                                            "status",
-                                        ).innerText =
-                                            `Live: Snapped near ${activeSnappedNode}`;
-                                    }
-                                }
-                            },
-                            (error) => {
-                                alert("GPS Error.");
-                                liveBtn.click();
-                            },
-                            {
-                                enableHighAccuracy: true,
-                                maximumAge: 0,
-                                timeout: 10000,
-                            },
-                        );
-                    }
-                }
-            });
-
             function findShortestPath(startNode, endNode) {
                 const distances = {},
                     prev = {},
@@ -816,12 +715,8 @@
                                 6,
                             );
                             window.panZoom.zoom(targetRelativeZoom);
-                            let actualRealZoom =
-                                window.panZoom.getSizes().realZoom;
-                            window.panZoom.pan({
-                                x: sizes.width / 2 - centerX * actualRealZoom,
-                                y: sizes.height / 2 - centerY * actualRealZoom,
-                            });
+                            // Use helper to center on the route bounding box center
+                            centerCameraOn(centerX, centerY);
                         }
 
                         const dot = document.getElementById("animated-dot");
@@ -836,6 +731,12 @@
                         dot.setAttribute("cx", nodes[pathNodes[0]].x);
                         dot.setAttribute("cy", nodes[pathNodes[0]].y);
 
+                        // Camera follow config: re-center when dot is within this fraction
+                        // of the viewport width/height from the edge. 0.2 = 20% margin.
+                        // On mobile (touch devices), always center like Google Maps nav.
+                        const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+                        const FOLLOW_EDGE_MARGIN = isMobile ? 0 : 0.2;
+
                         currentAnimation = setInterval(() => {
                             i++;
                             if (i >= pathNodes.length) {
@@ -843,6 +744,9 @@
                                 if (currentFloor !== endFloor) {
                                     switchFloor(endFloor);
                                     dot.style.display = "block";
+                                    // Re-center on destination floor
+                                    const destNode = nodes[pathNodes[pathNodes.length - 1]];
+                                    centerCameraOn(destNode.x, destNode.y);
                                 }
                                 status.innerText = `Arrived at ${destName}!`;
                                 return;
@@ -853,11 +757,38 @@
                             if (targetNode.floor !== currentFloor) {
                                 switchFloor(targetNode.floor);
                                 status.innerText = `Switched to ${targetNode.floor === "G" ? "Ground Floor" : "Floor " + targetNode.floor.replace("F", "")}...`;
+                                // Re-center immediately on floor switch (unconditional)
+                                centerCameraOn(targetNode.x, targetNode.y);
                             }
 
                             dot.style.display = "block";
                             dot.setAttribute("cx", targetNode.x);
                             dot.setAttribute("cy", targetNode.y);
+
+                            // Camera follow: on mobile always center (Google Maps style),
+                            // on desktop only re-center when dot approaches viewport edge.
+                            if (window.panZoom) {
+                                if (isMobile) {
+                                    // Mobile: always keep dot centered
+                                    centerCameraOn(targetNode.x, targetNode.y);
+                                } else {
+                                    // Desktop: edge-margin follow
+                                    const sizes = window.panZoom.getSizes();
+                                    const realZoom = sizes.realZoom;
+                                    const dotScreenX = targetNode.x * realZoom;
+                                    const dotScreenY = targetNode.y * realZoom;
+                                    const vpCenterX = sizes.width / 2;
+                                    const vpCenterY = sizes.height / 2;
+                                    const dx = dotScreenX - vpCenterX;
+                                    const dy = dotScreenY - vpCenterY;
+                                    const marginX = sizes.width * FOLLOW_EDGE_MARGIN;
+                                    const marginY = sizes.height * FOLLOW_EDGE_MARGIN;
+                                    if (Math.abs(dx) > sizes.width / 2 - marginX ||
+                                        Math.abs(dy) > sizes.height / 2 - marginY) {
+                                        centerCameraOn(targetNode.x, targetNode.y);
+                                    }
+                                }
+                            }
                         }, 300);
                     }
                 });
@@ -904,4 +835,80 @@
                         document.importNode(floorGroup, true)
                     );
                 }
+            }
+
+            // --- "Find me" re-center control ---
+            // One-shot manual re-frame onto the animated route dot; when no
+            // route dot is present, no camera movement + a status message.
+            // Reuses centerCameraOn and does NOT touch the follow loop.
+            const findMeBtn = document.getElementById("find-me-btn");
+            if (findMeBtn) {
+                findMeBtn.addEventListener("click", () => {
+                    const status = document.getElementById("status");
+                    let target = null;
+
+                    // Dot visibility is the indicator that a route dot is on
+                    // screen (during traversal and while parked at the
+                    // destination). currentAnimation is cleared but not nulled
+                    // when a route completes, so it is not a reliable signal.
+                    const dot = document.getElementById("animated-dot");
+                    if (dot && dot.style.display === "block") {
+                        target = {
+                            x: parseFloat(dot.getAttribute("cx")),
+                            y: parseFloat(dot.getAttribute("cy")),
+                        };
+                    }
+
+                    if (
+                        !target ||
+                        Number.isNaN(target.x) ||
+                        Number.isNaN(target.y)
+                    ) {
+                        // No active indicator -> leave camera untouched.
+                        if (status) {
+                            status.innerText = "No position to center on.";
+                        }
+                        return;
+                    }
+
+                    // Zoom to a moderate local framing (about a 380x300-unit
+                    // neighborhood of the 1200x900 map) so the dot is visible
+                    // without looking overly zoomed in on a phone.
+                    if (window.panZoom) {
+                        const sizes = window.panZoom.getSizes();
+                        const initialRealZoom = Math.min(
+                            sizes.width / 1200,
+                            sizes.height / 900,
+                        );
+                        const desiredRealZoom = Math.min(
+                            sizes.width / 380,
+                            sizes.height / 300,
+                        );
+                        const targetRelativeZoom = Math.min(
+                            Math.max(desiredRealZoom / initialRealZoom, 1),
+                            4,
+                        );
+                        window.panZoom.zoom(targetRelativeZoom);
+                    }
+
+                    // centerCameraOn reads realZoom fresh, so it centers the
+                    // dot at the zoom level set just above.
+                    centerCameraOn(target.x, target.y);
+                });
+            }
+
+            // --- Collapsible navigation panel ---
+            // Toggle adds/removes .collapsed on the panel. CSS hides the body
+            // and rotates the arrow when collapsed; desktop keeps the panel
+            // expanded and hides the toggle.
+            const uiPanel = document.getElementById("ui-panel");
+            const panelToggle = document.getElementById("panel-toggle");
+            if (uiPanel && panelToggle) {
+                panelToggle.addEventListener("click", () => {
+                    const collapsed = uiPanel.classList.toggle("collapsed");
+                    panelToggle.setAttribute(
+                        "aria-expanded",
+                        String(!collapsed),
+                    );
+                });
             }

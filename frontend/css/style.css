@@ -47,10 +47,6 @@
     --animated-dot-stroke-width: 2px;
     --animated-dot-shadow: rgba(0, 102, 255, 0.8);
 
-    /* GPS Live Tracking Dot */
-    --live-dot-color: #28a745;
-    --live-dot-stroke: #ffffff;
-
     /* Room Borders */
     --room-border-stroke: #000000;
     --room-border-width: 2.5px;
@@ -89,16 +85,79 @@ body {
    -------------------------------------------------------------------------- */
 #ui-panel {
     background: #ffffff;
-    padding: 15px 25px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     z-index: 10;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    flex-shrink: 0;
+}
+
+/* Collapse toggle bar. Hidden on desktop; on mobile it is the only thing
+   visible when the panel is collapsed. Arrow orientation reflects state:
+   expanded = arrow up (points away from the controls), collapsed = arrow
+   down (points toward the hidden controls). */
+#panel-toggle {
+    display: none;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: #0066cc;
+    color: #fff;
+    border: none;
+    border-radius: 0;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#panel-toggle:hover {
+    background: #0066cc;
+}
+
+.panel-toggle-arrow {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 8px solid #fff; /* points up */
+    transition: transform 0.3s ease;
+}
+
+#ui-panel.collapsed .panel-toggle-arrow {
+    transform: rotate(180deg); /* points down */
+}
+
+#ui-panel-body {
     display: flex;
     gap: 10px;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    position: relative;
-    flex-shrink: 0;
+    padding: 15px 25px;
+}
+
+/* Mobile: show the collapse toggle and allow the panel body to be hidden.
+   Desktop keeps the panel always expanded with the toggle hidden. */
+@media (max-width: 768px) {
+    #panel-toggle {
+        display: flex;
+    }
+
+    #ui-panel.collapsed #ui-panel-body {
+        display: none;
+    }
+
+    #ui-panel.collapsed #panel-toggle {
+        border-bottom: none;
+    }
+
+    #status {
+        margin-left: 0;
+    }
 }
 
 .form-group {
@@ -129,14 +188,6 @@ button {
 
 button:hover {
     background: #0052a3;
-}
-
-#live-btn {
-    background: #28a745;
-}
-
-#live-btn:hover {
-    background: #218838;
 }
 
 #status {
@@ -187,6 +238,89 @@ button:hover {
 
 .floor-btn:hover:not(.active) {
     background: #f0f0f0;
+}
+
+/* --------------------------------------------------------------------------
+   4a. "FIND ME" RE-CENTER BUTTON (floating, bottom-left)
+   Sits opposite the bottom-right floor picker so it stays in thumb reach
+   without overlapping it.
+   -------------------------------------------------------------------------- */
+#find-me-btn {
+    position: absolute;
+    left: 20px;
+    bottom: 80px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #0066cc;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    font-size: 1.5rem;
+    line-height: 1;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 100;
+}
+
+#find-me-btn:hover {
+    background: #f0f6ff;
+}
+
+/* --------------------------------------------------------------------------
+   4b. ZOOM LEVEL INDICATOR & CONTROLLER (CORNER WIDGET)
+   -------------------------------------------------------------------------- */
+#zoom-widget {
+    position: absolute;
+    left: 20px;
+    bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 8px 12px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    border: 1px solid #ccc;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    user-select: none;
+}
+
+#zoom-widget .zoom-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+#zoom-widget .zoom-input {
+    width: 48px;
+    padding: 4px 6px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #0066cc;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #ffffff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#zoom-widget .zoom-input:focus {
+    border-color: #0066cc;
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+}
+
+#zoom-widget .zoom-unit {
+    color: #666;
+    font-weight: bold;
 }
 
 /* --------------------------------------------------------------------------
@@ -261,6 +395,19 @@ svg#campus-map:active {
     svg#campus-map {
         width: 100%;
         height: 100%;
+    }
+
+    #zoom-widget {
+        left: 12px;
+        bottom: 15px;
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    #zoom-widget .zoom-input {
+        width: 42px;
+        padding: 3px 4px;
+        font-size: 12px;
     }
 }
 /* --------------------------------------------------------------------------
@@ -363,37 +510,7 @@ g.room,
 }
 
 /* --------------------------------------------------------------------------
-   10. SVG MAP GRAPHICS: LIVE GPS TRACKING BEACON
-   -------------------------------------------------------------------------- */
-#live-dot {
-    fill: var(--live-dot-color);
-    stroke: var(--live-dot-stroke);
-    stroke-width: 2px;
-    filter: drop-shadow(0px 0px 6px rgba(40, 167, 69, 0.9));
-    transition: cx 0.5s ease-out, cy 0.5s ease-out;
-}
-
-@keyframes pulse {
-    0% {
-        r: 8px;
-        opacity: 1;
-    }
-    100% {
-        r: 25px;
-        opacity: 0;
-    }
-}
-
-#pulse-ring {
-    fill: none;
-    stroke: var(--live-dot-color);
-    stroke-width: 2px;
-    animation: pulse 1.5s infinite ease-out;
-    transition: cx 0.5s ease-out, cy 0.5s ease-out;
-}
-
-/* --------------------------------------------------------------------------
-   11. SVG MAP GRAPHICS: TEXT LABELS & TYPOGRAPHY
+   10. SVG MAP GRAPHICS: TEXT LABELS & TYPOGRAPHY
    Crucial: All text and tspan elements must have stroke: none !important so they
    never inherit stroke outlines from parent SVG groups.
    -------------------------------------------------------------------------- */

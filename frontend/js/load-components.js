@@ -36,7 +36,7 @@ async function loadFloorMaps() {
     fragment.appendChild(imported);
   }
 
-  // Insert floor groups before global route/live-location overlays so overlays stay visible.
+  // Insert floor groups before the global route overlay so it stays visible.
   mapContent.insertBefore(fragment, mapContent.firstChild);
 }
 

@@ -49,11 +49,12 @@ function resolveSafePath(reqUrl) {
 
 if (typeof Bun !== "undefined") {
   // Bun server
-  const server = Bun.serve({
-    port: PORT,
-    async fetch(req) {
-      const url = new URL(req.url);
-      const filePath = resolveSafePath(url.pathname);
+    const server = Bun.serve({
+	port: PORT,
+	hostname:"0.0.0.0",
+	async fetch(req) {
+	    const url = new URL(req.url);
+	    const filePath = resolveSafePath(url.pathname);
 
       if (!filePath) {
         return new Response("403 Forbidden", { status: 403 });
